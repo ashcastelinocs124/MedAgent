@@ -1,0 +1,39 @@
+# Claude Code
+.claude/
+CLAUDE.md
+src/data/CLAUDE.md
+
+# Project management files
+learnings.md
+short_term_memory.md
+long_term_memory.md
+*_memory.md
+
+# Large data files
+brain/category_mapping.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+serviceAccountKey.json
+
+# OS
+.DS_Store
+
+# Runtime
+users/
+*.log
+*.sqlite
+*.db

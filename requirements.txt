@@ -1,0 +1,10 @@
+anthropic>=0.40.0
+networkx>=3.0
+openai>=1.0.0
+pgvector>=0.2.0
+requests>=2.31.0
+pandas>=2.0.0
+psycopg2-binary>=2.9.0
+python-dotenv>=1.0.0
+pytest-asyncio>=0.23.0
+blobfile>=3.2.0

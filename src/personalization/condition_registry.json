@@ -1,0 +1,1774 @@
+{
+  "acne": {
+    "category": "skin_dermatology",
+    "subcategory": "acne"
+  },
+  "acute asthma exacerbation": {
+    "category": "breathing_lungs",
+    "subcategory": "asthma"
+  },
+  "acute kidney injury": {
+    "category": "kidney_urinary",
+    "subcategory": "acute_kidney_injury"
+  },
+  "addiction": {
+    "category": "mental_health",
+    "subcategory": "substance_use_addiction"
+  },
+  "addison's adrenal disorders": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "adrenal disorders": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "adrenal disorders (cushing's, addison's)": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "adrenal disorders addison's": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "adrenal disorders cushing's": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "adverse drug reactions (adrs)": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "amblyopia": {
+    "category": "eye_health",
+    "subcategory": "strabismus_amblyopia"
+  },
+  "analgesic (paracetamol, nsaids, opioids)": {
+    "category": "medications_drug_safety",
+    "subcategory": "pain_medications_nsaids"
+  },
+  "anaphylactic shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "anaphylaxis": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "anemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_megaloblastic"
+  },
+  "anemia (iron-deficiency)": {
+    "category": "blood_immune",
+    "subcategory": "anemia_irondeficiency"
+  },
+  "anemia (megaloblastic)": {
+    "category": "blood_immune",
+    "subcategory": "anemia_megaloblastic"
+  },
+  "anemia (sickle cell)": {
+    "category": "blood_immune",
+    "subcategory": "anemia_sickle_cell"
+  },
+  "anemia (thalassemia)": {
+    "category": "blood_immune",
+    "subcategory": "anemia_thalassemia"
+  },
+  "anemia / cytopenia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_irondeficiency"
+  },
+  "anemia iron-deficiency": {
+    "category": "blood_immune",
+    "subcategory": "anemia_irondeficiency"
+  },
+  "anemia megaloblastic": {
+    "category": "blood_immune",
+    "subcategory": "anemia_megaloblastic"
+  },
+  "anemia sickle cell": {
+    "category": "blood_immune",
+    "subcategory": "anemia_sickle_cell"
+  },
+  "anemia thalassemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_thalassemia"
+  },
+  "anesthesia": {
+    "category": "emergency_critical_care",
+    "subcategory": "anesthesia_pain_management"
+  },
+  "anesthesia & pain management": {
+    "category": "emergency_critical_care",
+    "subcategory": "anesthesia_pain_management"
+  },
+  "anesthetics": {
+    "category": "medications_drug_safety",
+    "subcategory": "anesthetics"
+  },
+  "anthropometric assessment / growth percentiles": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "antibiotics": {
+    "category": "medications_drug_safety",
+    "subcategory": "antibiotics_antimicrobials"
+  },
+  "antibiotics & antimicrobials": {
+    "category": "medications_drug_safety",
+    "subcategory": "antibiotics_antimicrobials"
+  },
+  "anticoagulant / antiplatelet": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "antihypertensive agents": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "anxiety": {
+    "category": "mental_health",
+    "subcategory": "anxiety_ocd"
+  },
+  "anxiety & ocd": {
+    "category": "mental_health",
+    "subcategory": "anxiety_ocd"
+  },
+  "appendicitis": {
+    "category": "digestive_liver",
+    "subcategory": "appendicitis"
+  },
+  "arrhythmias": {
+    "category": "heart_blood_vessels",
+    "subcategory": "arrhythmias_rhythm_disorders"
+  },
+  "arrhythmias & rhythm disorders": {
+    "category": "heart_blood_vessels",
+    "subcategory": "arrhythmias_rhythm_disorders"
+  },
+  "arthritis": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "arthritis (oa, ra)": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "arthritis oa": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "arthritis ra": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "asthma": {
+    "category": "breathing_lungs",
+    "subcategory": "asthma"
+  },
+  "asthma attack": {
+    "category": "breathing_lungs",
+    "subcategory": "asthma"
+  },
+  "atopic dermatitis": {
+    "category": "skin_dermatology",
+    "subcategory": "eczema_dermatitis"
+  },
+  "autoimmune conditions": {
+    "category": "blood_immune",
+    "subcategory": "autoimmune_conditions"
+  },
+  "autoimmune skin disorders": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "autoimmune skin disorders (pemphigus, lupus skin)": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "autoimmune skin disorders lupus skin": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "autoimmune skin disorders pemphigus": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "bacterial infections": {
+    "category": "infections",
+    "subcategory": "bacterial_infections"
+  },
+  "bacterial skin infections": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "basal metabolic rate / metabolic processes": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "metabolic_syndrome"
+  },
+  "bcc skin cancer": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "biostatistics basics": {
+    "category": "public_health_prevention",
+    "subcategory": "biostatistics_basics"
+  },
+  "bipolar disorder / cyclothymia": {
+    "category": "mental_health",
+    "subcategory": "depression_mood_disorders"
+  },
+  "birth control": {
+    "category": "womens_reproductive",
+    "subcategory": "contraception"
+  },
+  "bleeding": {
+    "category": "blood_immune",
+    "subcategory": "bleeding_clotting_disorders"
+  },
+  "bleeding & clotting disorders": {
+    "category": "blood_immune",
+    "subcategory": "bleeding_clotting_disorders"
+  },
+  "blood cancer": {
+    "category": "blood_immune",
+    "subcategory": "leukemia_lymphoma"
+  },
+  "blood cancers": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "blood cancers (leukemia, lymphoma)": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "blood cancers leukemia": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "blood cancers lymphoma": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "blood clot": {
+    "category": "blood_immune",
+    "subcategory": "blood_transfusion"
+  },
+  "blood clot in lung": {
+    "category": "breathing_lungs",
+    "subcategory": "pulmonary_embolism"
+  },
+  "blood pressure medicine": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "blood test results": {
+    "category": "blood_immune",
+    "subcategory": "blood_transfusion"
+  },
+  "blood thinner": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "blood transfusion": {
+    "category": "blood_immune",
+    "subcategory": "blood_transfusion"
+  },
+  "blue baby": {
+    "category": "childrens_health",
+    "subcategory": "congenital_disorders"
+  },
+  "brain tumors": {
+    "category": "cancer",
+    "subcategory": "brain_tumors"
+  },
+  "breast cancer": {
+    "category": "cancer",
+    "subcategory": "breast_cancer"
+  },
+  "brittle bones": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "broken bone": {
+    "category": "bones_joints_muscles",
+    "subcategory": "fractures_trauma"
+  },
+  "bronchiectasis": {
+    "category": "breathing_lungs",
+    "subcategory": "bronchiectasis"
+  },
+  "bruising easily": {
+    "category": "blood_immune",
+    "subcategory": "thrombocytopenia"
+  },
+  "burn": {
+    "category": "emergency_critical_care",
+    "subcategory": "burns"
+  },
+  "burns": {
+    "category": "emergency_critical_care",
+    "subcategory": "burns"
+  },
+  "cancer": {
+    "category": "cancer",
+    "subcategory": "breast_cancer"
+  },
+  "cancer spread": {
+    "category": "cancer",
+    "subcategory": "breast_cancer"
+  },
+  "cancer stage": {
+    "category": "cancer",
+    "subcategory": "tumor_markers_staging"
+  },
+  "cardiac drugs": {
+    "category": "medications_drug_safety",
+    "subcategory": "cardiac_drugs"
+  },
+  "cardiac murmur": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "cardiogenic shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "cardiopulmonary resuscitation": {
+    "category": "emergency_critical_care",
+    "subcategory": "cpr_resuscitation"
+  },
+  "cataract": {
+    "category": "eye_health",
+    "subcategory": "cataracts"
+  },
+  "cataracts": {
+    "category": "eye_health",
+    "subcategory": "cataracts"
+  },
+  "cavity": {
+    "category": "dental_oral",
+    "subcategory": "dental_materials"
+  },
+  "cerebrovascular accident (cva)": {
+    "category": "brain_nervous_system",
+    "subcategory": "stroke_cerebrovascular_disease"
+  },
+  "chemotherapy": {
+    "category": "medications_drug_safety",
+    "subcategory": "chemotherapy_targeted_therapy"
+  },
+  "chemotherapy & targeted therapy": {
+    "category": "medications_drug_safety",
+    "subcategory": "chemotherapy_targeted_therapy"
+  },
+  "child": {
+    "category": "mental_health",
+    "subcategory": "child_adolescent_psychiatry"
+  },
+  "child & adolescent psychiatry": {
+    "category": "mental_health",
+    "subcategory": "child_adolescent_psychiatry"
+  },
+  "childhood cancers": {
+    "category": "childrens_health",
+    "subcategory": "childhood_cancers"
+  },
+  "childhood infections": {
+    "category": "childrens_health",
+    "subcategory": "childhood_infections"
+  },
+  "chronic bronchitis / copd": {
+    "category": "breathing_lungs",
+    "subcategory": "copd"
+  },
+  "chronic kidney disease": {
+    "category": "kidney_urinary",
+    "subcategory": "chronic_kidney_disease"
+  },
+  "chronic kidney disease (ckd) / end-stage renal disease (esrd)": {
+    "category": "kidney_urinary",
+    "subcategory": "chronic_kidney_disease"
+  },
+  "circulatory shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "collapsed lung": {
+    "category": "breathing_lungs",
+    "subcategory": "lung_cancer"
+  },
+  "colorectal gi cancers": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "complete blood count (cbc)": {
+    "category": "blood_immune",
+    "subcategory": "blood_transfusion"
+  },
+  "congenital bone disorders": {
+    "category": "bones_joints_muscles",
+    "subcategory": "congenital_bone_disorders"
+  },
+  "congenital disorders": {
+    "category": "childrens_health",
+    "subcategory": "congenital_disorders"
+  },
+  "congenital heart defects": {
+    "category": "heart_blood_vessels",
+    "subcategory": "congenital_heart_defects"
+  },
+  "congestive heart failure (chf)": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "conjunctivitis": {
+    "category": "eye_health",
+    "subcategory": "eye_infections"
+  },
+  "contraception": {
+    "category": "womens_reproductive",
+    "subcategory": "contraception"
+  },
+  "copd": {
+    "category": "breathing_lungs",
+    "subcategory": "copd"
+  },
+  "corneal disorders": {
+    "category": "eye_health",
+    "subcategory": "corneal_disorders"
+  },
+  "coronary artery disease": {
+    "category": "heart_blood_vessels",
+    "subcategory": "coronary_artery_disease"
+  },
+  "cpr": {
+    "category": "emergency_critical_care",
+    "subcategory": "cpr_resuscitation"
+  },
+  "cpr & resuscitation": {
+    "category": "emergency_critical_care",
+    "subcategory": "cpr_resuscitation"
+  },
+  "cranial nerve disorders": {
+    "category": "brain_nervous_system",
+    "subcategory": "cranial_nerve_disorders"
+  },
+  "crohn's / colitis": {
+    "category": "digestive_liver",
+    "subcategory": "inflammatory_bowel_disease"
+  },
+  "cushing's adrenal disorders": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "adrenal_disorders_cushings_addisons"
+  },
+  "cyanotic congenital heart disease": {
+    "category": "childrens_health",
+    "subcategory": "congenital_disorders"
+  },
+  "dementia": {
+    "category": "mental_health",
+    "subcategory": "dementia_cognitive_decline"
+  },
+  "dementia & cognitive decline": {
+    "category": "mental_health",
+    "subcategory": "dementia_cognitive_decline"
+  },
+  "dental caries": {
+    "category": "dental_oral",
+    "subcategory": "dental_materials"
+  },
+  "dental emergencies": {
+    "category": "dental_oral",
+    "subcategory": "dental_emergencies"
+  },
+  "dental materials": {
+    "category": "dental_oral",
+    "subcategory": "dental_materials"
+  },
+  "dental restoration (amalgam, composite, ceramic)": {
+    "category": "dental_oral",
+    "subcategory": "dental_materials"
+  },
+  "depression": {
+    "category": "mental_health",
+    "subcategory": "depression_mood_disorders"
+  },
+  "depression & mood disorders": {
+    "category": "mental_health",
+    "subcategory": "depression_mood_disorders"
+  },
+  "dermatitis / exanthem / eruption": {
+    "category": "skin_dermatology",
+    "subcategory": "eczema_dermatitis"
+  },
+  "diabetes": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetes (type 1, type 2, gestational)": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetes gestational": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetes mellitus (type 1, type 2, gestational)": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetes type 1": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetes type 2": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "diabetic eye disease": {
+    "category": "eye_health",
+    "subcategory": "diabetic_eye_disease"
+  },
+  "dialysis": {
+    "category": "kidney_urinary",
+    "subcategory": "dialysis"
+  },
+  "disaster management": {
+    "category": "public_health_prevention",
+    "subcategory": "disaster_management"
+  },
+  "dizziness / vertigo": {
+    "category": "ear_nose_throat",
+    "subcategory": "vertigo_balance_disorders"
+  },
+  "drug interaction": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "drug overdose / poisoning": {
+    "category": "emergency_critical_care",
+    "subcategory": "poisoning_toxicology"
+  },
+  "drug reactions": {
+    "category": "skin_dermatology",
+    "subcategory": "drug_reactions"
+  },
+  "drug side effects": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "drug side effects & interactions": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "drug-drug interaction (ddi)": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "ear infection": {
+    "category": "ear_nose_throat",
+    "subcategory": "hearing_loss_ear_infections"
+  },
+  "ecg interpretation": {
+    "category": "heart_blood_vessels",
+    "subcategory": "ecg_interpretation"
+  },
+  "eczema": {
+    "category": "skin_dermatology",
+    "subcategory": "eczema_dermatitis"
+  },
+  "eczema & dermatitis": {
+    "category": "skin_dermatology",
+    "subcategory": "eczema_dermatitis"
+  },
+  "electrolyte disorders": {
+    "category": "kidney_urinary",
+    "subcategory": "electrolyte_disorders"
+  },
+  "environmental health": {
+    "category": "public_health_prevention",
+    "subcategory": "environmental_health"
+  },
+  "epidemiology": {
+    "category": "public_health_prevention",
+    "subcategory": "epidemiology_disease_surveillance"
+  },
+  "epidemiology & disease surveillance": {
+    "category": "public_health_prevention",
+    "subcategory": "epidemiology_disease_surveillance"
+  },
+  "epileptic seizures / epilepsy": {
+    "category": "brain_nervous_system",
+    "subcategory": "seizures_epilepsy"
+  },
+  "epistaxis": {
+    "category": "ear_nose_throat",
+    "subcategory": "epistaxis"
+  },
+  "eye infections": {
+    "category": "eye_health",
+    "subcategory": "eye_infections"
+  },
+  "eye pressure": {
+    "category": "eye_health",
+    "subcategory": "eye_infections"
+  },
+  "facial nerve disorders": {
+    "category": "ear_nose_throat",
+    "subcategory": "facial_nerve_disorders"
+  },
+  "failure to thrive": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "faltering growth": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "fatty liver": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "filling": {
+    "category": "dental_oral",
+    "subcategory": "dental_materials"
+  },
+  "fits / seizures": {
+    "category": "brain_nervous_system",
+    "subcategory": "seizures_epilepsy"
+  },
+  "flu": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "fluid in lungs": {
+    "category": "breathing_lungs",
+    "subcategory": "tuberculosis_pulmonary"
+  },
+  "forensic": {
+    "category": "emergency_critical_care",
+    "subcategory": "forensic_legal_medicine"
+  },
+  "forensic & legal medicine": {
+    "category": "emergency_critical_care",
+    "subcategory": "forensic_legal_medicine"
+  },
+  "fracture": {
+    "category": "bones_joints_muscles",
+    "subcategory": "fractures_trauma"
+  },
+  "fractures": {
+    "category": "bones_joints_muscles",
+    "subcategory": "fractures_trauma"
+  },
+  "fractures & trauma": {
+    "category": "bones_joints_muscles",
+    "subcategory": "fractures_trauma"
+  },
+  "fungal infections": {
+    "category": "infections",
+    "subcategory": "fungal_infections"
+  },
+  "fungal skin infections": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "gallbladder": {
+    "category": "digestive_liver",
+    "subcategory": "gallbladder_bile_duct_disorders"
+  },
+  "gallbladder & bile duct disorders": {
+    "category": "digestive_liver",
+    "subcategory": "gallbladder_bile_duct_disorders"
+  },
+  "gastric gi cancers": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "gastroesophageal reflux disease (gerd)": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "gestational diabetes": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "gi cancers": {
+    "category": "digestive_liver",
+    "subcategory": "gi_cancers"
+  },
+  "gi cancers (colorectal, gastric, pancreatic, hepatocellular)": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "gi cancers colorectal": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "gi cancers gastric": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "gi cancers hepatocellular": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "gi cancers pancreatic": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "glaucoma": {
+    "category": "eye_health",
+    "subcategory": "glaucoma"
+  },
+  "growth": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "growth & development milestones": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "growth chart": {
+    "category": "childrens_health",
+    "subcategory": "growth_development_milestones"
+  },
+  "gum disease": {
+    "category": "dental_oral",
+    "subcategory": "gum_disease_periodontics"
+  },
+  "gum disease (periodontics)": {
+    "category": "dental_oral",
+    "subcategory": "gum_disease_periodontics"
+  },
+  "gum disease periodontics": {
+    "category": "dental_oral",
+    "subcategory": "gum_disease_periodontics"
+  },
+  "gynecologic cancers": {
+    "category": "womens_reproductive",
+    "subcategory": "gynecologic_cancers"
+  },
+  "head": {
+    "category": "ear_nose_throat",
+    "subcategory": "head_neck_tumors"
+  },
+  "head & neck tumors": {
+    "category": "ear_nose_throat",
+    "subcategory": "head_neck_tumors"
+  },
+  "headache": {
+    "category": "brain_nervous_system",
+    "subcategory": "headache_migraine"
+  },
+  "headache & migraine": {
+    "category": "brain_nervous_system",
+    "subcategory": "headache_migraine"
+  },
+  "hearing loss": {
+    "category": "ear_nose_throat",
+    "subcategory": "hearing_loss_ear_infections"
+  },
+  "hearing loss & ear infections": {
+    "category": "ear_nose_throat",
+    "subcategory": "hearing_loss_ear_infections"
+  },
+  "heart attack": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "heart failure": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "heart murmur": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "heartburn / acid reflux": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "hemodialysis / peritoneal dialysis": {
+    "category": "kidney_urinary",
+    "subcategory": "dialysis"
+  },
+  "hepatitis viral infections": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "hepatocellular gi cancers": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "hernias": {
+    "category": "digestive_liver",
+    "subcategory": "hernias"
+  },
+  "hiv viral infections": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "hives": {
+    "category": "skin_dermatology",
+    "subcategory": "urticaria_allergic_skin"
+  },
+  "hospital-acquired infections": {
+    "category": "infections",
+    "subcategory": "hospitalacquired_infections"
+  },
+  "hot flashes": {
+    "category": "womens_reproductive",
+    "subcategory": "menopause"
+  },
+  "hypertension": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "hypertension & blood pressure": {
+    "category": "heart_blood_vessels",
+    "subcategory": "hypertension_blood_pressure"
+  },
+  "hypothyroidism / hyperthyroidism": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "thyroid_disorders"
+  },
+  "hypovolemic shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "ibs": {
+    "category": "digestive_liver",
+    "subcategory": "inflammatory_bowel_disease"
+  },
+  "immunodeficiency": {
+    "category": "blood_immune",
+    "subcategory": "immunodeficiency"
+  },
+  "inborn errors of metabolism": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "inborn_errors_of_metabolism"
+  },
+  "infertility": {
+    "category": "womens_reproductive",
+    "subcategory": "infertility"
+  },
+  "inflammatory bowel disease": {
+    "category": "digestive_liver",
+    "subcategory": "inflammatory_bowel_disease"
+  },
+  "inflammatory bowel disease (ibd)": {
+    "category": "digestive_liver",
+    "subcategory": "inflammatory_bowel_disease"
+  },
+  "influenza": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "influenza viral infections": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "interstitial lung disease": {
+    "category": "breathing_lungs",
+    "subcategory": "interstitial_lung_disease"
+  },
+  "intraocular pressure (iop)": {
+    "category": "eye_health",
+    "subcategory": "eye_infections"
+  },
+  "iron-deficiency anemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_irondeficiency"
+  },
+  "irritable bowel syndrome": {
+    "category": "digestive_liver",
+    "subcategory": "inflammatory_bowel_disease"
+  },
+  "kidney failure": {
+    "category": "kidney_urinary",
+    "subcategory": "chronic_kidney_disease"
+  },
+  "kidney infection": {
+    "category": "kidney_urinary",
+    "subcategory": "chronic_kidney_disease"
+  },
+  "kidney stones": {
+    "category": "kidney_urinary",
+    "subcategory": "kidney_stones"
+  },
+  "lazy eye": {
+    "category": "eye_health",
+    "subcategory": "strabismus_amblyopia"
+  },
+  "lens opacity": {
+    "category": "eye_health",
+    "subcategory": "cataracts"
+  },
+  "leukemia": {
+    "category": "blood_immune",
+    "subcategory": "leukemia_lymphoma"
+  },
+  "leukemia & lymphoma": {
+    "category": "blood_immune",
+    "subcategory": "leukemia_lymphoma"
+  },
+  "leukemia / lymphoma / myeloma": {
+    "category": "blood_immune",
+    "subcategory": "leukemia_lymphoma"
+  },
+  "leukemia blood cancers": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "liver disease": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "liver disease & hepatitis": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "low blood count": {
+    "category": "blood_immune",
+    "subcategory": "anemia_irondeficiency"
+  },
+  "low immunity": {
+    "category": "blood_immune",
+    "subcategory": "immunodeficiency"
+  },
+  "lung cancer": {
+    "category": "cancer",
+    "subcategory": "lung_cancer"
+  },
+  "lupus skin autoimmune skin disorders": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "lymphoma blood cancers": {
+    "category": "cancer",
+    "subcategory": "blood_cancers_leukemia_lymphoma"
+  },
+  "malabsorption syndromes": {
+    "category": "digestive_liver",
+    "subcategory": "malabsorption_syndromes"
+  },
+  "malignant neoplasm / carcinoma / sarcoma": {
+    "category": "cancer",
+    "subcategory": "breast_cancer"
+  },
+  "maternal": {
+    "category": "public_health_prevention",
+    "subcategory": "maternal_child_health_programs"
+  },
+  "maternal & child health programs": {
+    "category": "public_health_prevention",
+    "subcategory": "maternal_child_health_programs"
+  },
+  "megaloblastic anemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_megaloblastic"
+  },
+  "melanoma skin cancer": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "meningitis": {
+    "category": "brain_nervous_system",
+    "subcategory": "meningitis_cns_infections"
+  },
+  "meningitis & cns infections": {
+    "category": "brain_nervous_system",
+    "subcategory": "meningitis_cns_infections"
+  },
+  "menopause": {
+    "category": "womens_reproductive",
+    "subcategory": "menopause"
+  },
+  "menstrual disorders": {
+    "category": "womens_reproductive",
+    "subcategory": "menstrual_disorders"
+  },
+  "menstrual disorders (amenorrhea, menorrhagia, dysmenorrhea)": {
+    "category": "womens_reproductive",
+    "subcategory": "menstrual_disorders"
+  },
+  "metabolic bone disease": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "metabolic bone disease (osteoporosis, rickets)": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "metabolic bone disease osteoporosis": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "metabolic bone disease rickets": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "metabolic syndrome": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "metabolic_syndrome"
+  },
+  "metabolism": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "metabolic_syndrome"
+  },
+  "metastasis": {
+    "category": "cancer",
+    "subcategory": "breast_cancer"
+  },
+  "micronutrient deficiency": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "vitamin_deficiencies_supplements"
+  },
+  "mood swings": {
+    "category": "mental_health",
+    "subcategory": "depression_mood_disorders"
+  },
+  "morning sickness": {
+    "category": "womens_reproductive",
+    "subcategory": "pregnancy_childbirth"
+  },
+  "myocardial infarction (mi)": {
+    "category": "heart_blood_vessels",
+    "subcategory": "heart_failure"
+  },
+  "national health programs": {
+    "category": "public_health_prevention",
+    "subcategory": "national_health_programs"
+  },
+  "nausea and vomiting of pregnancy (nvp) / hyperemesis gravidarum": {
+    "category": "womens_reproductive",
+    "subcategory": "pregnancy_childbirth"
+  },
+  "neoplasm": {
+    "category": "cancer",
+    "subcategory": "brain_tumors"
+  },
+  "nephritic syndrome": {
+    "category": "kidney_urinary",
+    "subcategory": "nephrotic_nephritic_syndrome"
+  },
+  "nephrolithiasis / renal calculi": {
+    "category": "kidney_urinary",
+    "subcategory": "kidney_stones"
+  },
+  "nephrotic / nephritic syndrome": {
+    "category": "kidney_urinary",
+    "subcategory": "nephrotic_nephritic_syndrome"
+  },
+  "nephrotic syndrome": {
+    "category": "kidney_urinary",
+    "subcategory": "nephrotic_nephritic_syndrome"
+  },
+  "neurodegenerative diseases": {
+    "category": "brain_nervous_system",
+    "subcategory": "neurodegenerative_diseases"
+  },
+  "newborn care": {
+    "category": "childrens_health",
+    "subcategory": "newborn_care"
+  },
+  "non-alcoholic fatty liver disease (nafld) / masld": {
+    "category": "digestive_liver",
+    "subcategory": "liver_disease_hepatitis"
+  },
+  "nosebleed": {
+    "category": "ear_nose_throat",
+    "subcategory": "epistaxis"
+  },
+  "nutrition": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "nutrition_dietary_guidelines"
+  },
+  "nutrition & dietary guidelines": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "nutrition_dietary_guidelines"
+  },
+  "nutrition programs": {
+    "category": "public_health_prevention",
+    "subcategory": "nutrition_programs"
+  },
+  "oa arthritis": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "obesity": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "obesity"
+  },
+  "obesity (bmi >=30)": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "obesity"
+  },
+  "occupational health": {
+    "category": "public_health_prevention",
+    "subcategory": "occupational_health"
+  },
+  "oncology treatment principles": {
+    "category": "cancer",
+    "subcategory": "oncology_treatment_principles"
+  },
+  "oral cancer": {
+    "category": "dental_oral",
+    "subcategory": "oral_cancer"
+  },
+  "oral infections": {
+    "category": "dental_oral",
+    "subcategory": "oral_infections"
+  },
+  "orthodontics": {
+    "category": "dental_oral",
+    "subcategory": "orthodontics"
+  },
+  "osteoarthritis (oa) vs rheumatoid arthritis (ra)": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "osteoporosis": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "osteoporosis metabolic bone disease": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "otitis media (middle ear) / otitis externa (outer ear)": {
+    "category": "ear_nose_throat",
+    "subcategory": "hearing_loss_ear_infections"
+  },
+  "over-the-counter medications": {
+    "category": "medications_drug_safety",
+    "subcategory": "overthecounter_medications"
+  },
+  "overdose": {
+    "category": "emergency_critical_care",
+    "subcategory": "poisoning_toxicology"
+  },
+  "pain medications": {
+    "category": "medications_drug_safety",
+    "subcategory": "pain_medications_nsaids"
+  },
+  "pain medications & nsaids": {
+    "category": "medications_drug_safety",
+    "subcategory": "pain_medications_nsaids"
+  },
+  "painkiller": {
+    "category": "medications_drug_safety",
+    "subcategory": "pain_medications_nsaids"
+  },
+  "pancreatic gi cancers": {
+    "category": "cancer",
+    "subcategory": "gi_cancers_colorectal_gastric_pancreatic_hepatocellular"
+  },
+  "pancreatitis": {
+    "category": "digestive_liver",
+    "subcategory": "pancreatitis"
+  },
+  "parasitic infections": {
+    "category": "infections",
+    "subcategory": "parasitic_infections"
+  },
+  "parkinson's disease": {
+    "category": "brain_nervous_system",
+    "subcategory": "stroke_cerebrovascular_disease"
+  },
+  "pcos polycystic ovary syndrome": {
+    "category": "womens_reproductive",
+    "subcategory": "polycystic_ovary_syndrome_pcos"
+  },
+  "pediatric emergencies": {
+    "category": "childrens_health",
+    "subcategory": "pediatric_emergencies"
+  },
+  "pediatric nutrition": {
+    "category": "childrens_health",
+    "subcategory": "pediatric_nutrition"
+  },
+  "pemphigus autoimmune skin disorders": {
+    "category": "skin_dermatology",
+    "subcategory": "autoimmune_skin_disorders_pemphigus_lupus_skin"
+  },
+  "peptic ulcer disease (pud)": {
+    "category": "digestive_liver",
+    "subcategory": "stomach_peptic_ulcers"
+  },
+  "period problems": {
+    "category": "womens_reproductive",
+    "subcategory": "menstrual_disorders"
+  },
+  "periodontal disease (gingivitis \u2192 periodontitis)": {
+    "category": "dental_oral",
+    "subcategory": "gum_disease_periodontics"
+  },
+  "periodontics gum disease": {
+    "category": "dental_oral",
+    "subcategory": "gum_disease_periodontics"
+  },
+  "peripheral neuropathy": {
+    "category": "brain_nervous_system",
+    "subcategory": "peripheral_neuropathy"
+  },
+  "peripheral vascular disease": {
+    "category": "heart_blood_vessels",
+    "subcategory": "peripheral_vascular_disease"
+  },
+  "pharmacokinetics basics": {
+    "category": "medications_drug_safety",
+    "subcategory": "pharmacokinetics_basics"
+  },
+  "pharyngitis / tonsillitis": {
+    "category": "ear_nose_throat",
+    "subcategory": "throat_larynx"
+  },
+  "pink eye": {
+    "category": "eye_health",
+    "subcategory": "eye_infections"
+  },
+  "pituitary disorders": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "pituitary_disorders"
+  },
+  "pleural diseases": {
+    "category": "breathing_lungs",
+    "subcategory": "pleural_diseases"
+  },
+  "pneumonia": {
+    "category": "breathing_lungs",
+    "subcategory": "pneumonia"
+  },
+  "pneumothorax": {
+    "category": "breathing_lungs",
+    "subcategory": "lung_cancer"
+  },
+  "poisoning": {
+    "category": "emergency_critical_care",
+    "subcategory": "poisoning_toxicology"
+  },
+  "poisoning & toxicology": {
+    "category": "emergency_critical_care",
+    "subcategory": "poisoning_toxicology"
+  },
+  "polycystic ovary syndrome": {
+    "category": "womens_reproductive",
+    "subcategory": "polycystic_ovary_syndrome_pcos"
+  },
+  "polycystic ovary syndrome (pcos)": {
+    "category": "womens_reproductive",
+    "subcategory": "polycystic_ovary_syndrome_pcos"
+  },
+  "polycystic ovary syndrome pcos": {
+    "category": "womens_reproductive",
+    "subcategory": "polycystic_ovary_syndrome_pcos"
+  },
+  "pre-eclampsia": {
+    "category": "womens_reproductive",
+    "subcategory": "preeclampsia_pregnancy_complications"
+  },
+  "pre-eclampsia & pregnancy complications": {
+    "category": "womens_reproductive",
+    "subcategory": "preeclampsia_pregnancy_complications"
+  },
+  "pregnancy": {
+    "category": "womens_reproductive",
+    "subcategory": "pregnancy_childbirth"
+  },
+  "pregnancy & childbirth": {
+    "category": "womens_reproductive",
+    "subcategory": "pregnancy_childbirth"
+  },
+  "prostate cancer": {
+    "category": "cancer",
+    "subcategory": "prostate_cancer"
+  },
+  "prostate disorders": {
+    "category": "kidney_urinary",
+    "subcategory": "prostate_disorders"
+  },
+  "prosthodontics": {
+    "category": "dental_oral",
+    "subcategory": "prosthodontics"
+  },
+  "psoriasis": {
+    "category": "skin_dermatology",
+    "subcategory": "psoriasis"
+  },
+  "psychiatric medications": {
+    "category": "medications_drug_safety",
+    "subcategory": "psychiatric_medications"
+  },
+  "pulmonary edema / pleural effusion": {
+    "category": "breathing_lungs",
+    "subcategory": "tuberculosis_pulmonary"
+  },
+  "pulmonary embolism": {
+    "category": "breathing_lungs",
+    "subcategory": "pulmonary_embolism"
+  },
+  "pulmonary embolism (pe)": {
+    "category": "breathing_lungs",
+    "subcategory": "pulmonary_embolism"
+  },
+  "pulmonary tuberculosis": {
+    "category": "breathing_lungs",
+    "subcategory": "tuberculosis_pulmonary"
+  },
+  "pyelonephritis": {
+    "category": "kidney_urinary",
+    "subcategory": "chronic_kidney_disease"
+  },
+  "ra arthritis": {
+    "category": "bones_joints_muscles",
+    "subcategory": "arthritis_oa_ra"
+  },
+  "rash": {
+    "category": "skin_dermatology",
+    "subcategory": "eczema_dermatitis"
+  },
+  "refractive errors": {
+    "category": "eye_health",
+    "subcategory": "refractive_errors"
+  },
+  "retinal diseases": {
+    "category": "eye_health",
+    "subcategory": "retinal_diseases"
+  },
+  "rickets metabolic bone disease": {
+    "category": "bones_joints_muscles",
+    "subcategory": "metabolic_bone_disease_osteoporosis_rickets"
+  },
+  "scc skin cancer": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "schizophrenia": {
+    "category": "mental_health",
+    "subcategory": "schizophrenia_psychotic_disorders"
+  },
+  "schizophrenia & psychotic disorders": {
+    "category": "mental_health",
+    "subcategory": "schizophrenia_psychotic_disorders"
+  },
+  "seizures": {
+    "category": "brain_nervous_system",
+    "subcategory": "seizures_epilepsy"
+  },
+  "seizures & epilepsy": {
+    "category": "brain_nervous_system",
+    "subcategory": "seizures_epilepsy"
+  },
+  "sensorineural vs conductive hearing loss": {
+    "category": "ear_nose_throat",
+    "subcategory": "hearing_loss_ear_infections"
+  },
+  "septic shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "sexually transmitted infection (sti)": {
+    "category": "infections",
+    "subcategory": "sexually_transmitted_infections"
+  },
+  "sexually transmitted infections": {
+    "category": "infections",
+    "subcategory": "sexually_transmitted_infections"
+  },
+  "shaking palsy": {
+    "category": "brain_nervous_system",
+    "subcategory": "stroke_cerebrovascular_disease"
+  },
+  "shock": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "shock (hypovolemic, cardiogenic, septic)": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "shock cardiogenic": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "shock hypovolemic": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "shock septic": {
+    "category": "emergency_critical_care",
+    "subcategory": "shock_hypovolemic_cardiogenic_septic"
+  },
+  "sickle cell anemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_sickle_cell"
+  },
+  "side effects": {
+    "category": "medications_drug_safety",
+    "subcategory": "drug_side_effects_interactions"
+  },
+  "sinusitis": {
+    "category": "ear_nose_throat",
+    "subcategory": "sinusitis_nasal_disorders"
+  },
+  "sinusitis & nasal disorders": {
+    "category": "ear_nose_throat",
+    "subcategory": "sinusitis_nasal_disorders"
+  },
+  "skin cancer": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "skin cancer (melanoma, bcc, scc)": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "skin cancer bcc": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "skin cancer melanoma": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "skin cancer scc": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_cancer_melanoma_bcc_scc"
+  },
+  "skin infections": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "skin infections (fungal, bacterial, viral)": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "skin infections bacterial": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "skin infections fungal": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "skin infections viral": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "sleep apnea": {
+    "category": "breathing_lungs",
+    "subcategory": "sleep_apnea"
+  },
+  "sleep disorders": {
+    "category": "mental_health",
+    "subcategory": "sleep_disorders"
+  },
+  "smoker's cough": {
+    "category": "breathing_lungs",
+    "subcategory": "copd"
+  },
+  "snakebite": {
+    "category": "emergency_critical_care",
+    "subcategory": "snakebite_envenomation"
+  },
+  "snakebite & envenomation": {
+    "category": "emergency_critical_care",
+    "subcategory": "snakebite_envenomation"
+  },
+  "soft tissue injuries": {
+    "category": "bones_joints_muscles",
+    "subcategory": "soft_tissue_injuries"
+  },
+  "sore throat": {
+    "category": "ear_nose_throat",
+    "subcategory": "throat_larynx"
+  },
+  "spinal cord disorders": {
+    "category": "brain_nervous_system",
+    "subcategory": "spinal_cord_disorders"
+  },
+  "spinal disorders": {
+    "category": "bones_joints_muscles",
+    "subcategory": "spinal_disorders"
+  },
+  "sports injuries": {
+    "category": "bones_joints_muscles",
+    "subcategory": "sports_injuries"
+  },
+  "std": {
+    "category": "infections",
+    "subcategory": "sexually_transmitted_infections"
+  },
+  "stis in women": {
+    "category": "womens_reproductive",
+    "subcategory": "stis_in_women"
+  },
+  "stomach": {
+    "category": "digestive_liver",
+    "subcategory": "stomach_peptic_ulcers"
+  },
+  "stomach & peptic ulcers": {
+    "category": "digestive_liver",
+    "subcategory": "stomach_peptic_ulcers"
+  },
+  "stomach bug": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "stomach flu": {
+    "category": "digestive_liver",
+    "subcategory": "stomach_peptic_ulcers"
+  },
+  "stomach ulcer": {
+    "category": "digestive_liver",
+    "subcategory": "stomach_peptic_ulcers"
+  },
+  "strabismus": {
+    "category": "eye_health",
+    "subcategory": "strabismus_amblyopia"
+  },
+  "strabismus & amblyopia": {
+    "category": "eye_health",
+    "subcategory": "strabismus_amblyopia"
+  },
+  "stroke": {
+    "category": "brain_nervous_system",
+    "subcategory": "stroke_cerebrovascular_disease"
+  },
+  "stroke & cerebrovascular disease": {
+    "category": "brain_nervous_system",
+    "subcategory": "stroke_cerebrovascular_disease"
+  },
+  "substance use": {
+    "category": "mental_health",
+    "subcategory": "substance_use_addiction"
+  },
+  "substance use & addiction": {
+    "category": "mental_health",
+    "subcategory": "substance_use_addiction"
+  },
+  "substance use disorder (sud)": {
+    "category": "mental_health",
+    "subcategory": "substance_use_addiction"
+  },
+  "suicide risk assessment": {
+    "category": "mental_health",
+    "subcategory": "suicide_risk_assessment"
+  },
+  "surgical emergencies": {
+    "category": "emergency_critical_care",
+    "subcategory": "surgical_emergencies"
+  },
+  "thalassemia anemia": {
+    "category": "blood_immune",
+    "subcategory": "anemia_thalassemia"
+  },
+  "thermal injury": {
+    "category": "emergency_critical_care",
+    "subcategory": "burns"
+  },
+  "throat": {
+    "category": "ear_nose_throat",
+    "subcategory": "throat_larynx"
+  },
+  "throat & larynx": {
+    "category": "ear_nose_throat",
+    "subcategory": "throat_larynx"
+  },
+  "thrombocytopenia": {
+    "category": "blood_immune",
+    "subcategory": "thrombocytopenia"
+  },
+  "thrombocytopenia / coagulation disorder": {
+    "category": "blood_immune",
+    "subcategory": "thrombocytopenia"
+  },
+  "thrombosis (venous or arterial)": {
+    "category": "blood_immune",
+    "subcategory": "blood_transfusion"
+  },
+  "thyroid disorders": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "thyroid_disorders"
+  },
+  "thyroid problem": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "thyroid_disorders"
+  },
+  "tmj disorders": {
+    "category": "dental_oral",
+    "subcategory": "tmj_disorders"
+  },
+  "tnm staging": {
+    "category": "cancer",
+    "subcategory": "tumor_markers_staging"
+  },
+  "tonsils": {
+    "category": "ear_nose_throat",
+    "subcategory": "tonsils_adenoids"
+  },
+  "tonsils & adenoids": {
+    "category": "ear_nose_throat",
+    "subcategory": "tonsils_adenoids"
+  },
+  "tooth decay": {
+    "category": "dental_oral",
+    "subcategory": "tooth_decay_fillings"
+  },
+  "tooth decay & fillings": {
+    "category": "dental_oral",
+    "subcategory": "tooth_decay_fillings"
+  },
+  "trauma": {
+    "category": "emergency_critical_care",
+    "subcategory": "trauma_fractures"
+  },
+  "trauma & fractures": {
+    "category": "emergency_critical_care",
+    "subcategory": "trauma_fractures"
+  },
+  "tuberculosis": {
+    "category": "infections",
+    "subcategory": "tuberculosis"
+  },
+  "tuberculosis (pulmonary)": {
+    "category": "breathing_lungs",
+    "subcategory": "tuberculosis_pulmonary"
+  },
+  "tuberculosis pulmonary": {
+    "category": "breathing_lungs",
+    "subcategory": "tuberculosis_pulmonary"
+  },
+  "tumor": {
+    "category": "cancer",
+    "subcategory": "brain_tumors"
+  },
+  "tumor markers": {
+    "category": "cancer",
+    "subcategory": "tumor_markers_staging"
+  },
+  "tumor markers & staging": {
+    "category": "cancer",
+    "subcategory": "tumor_markers_staging"
+  },
+  "type 1 diabetes": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "type 2 diabetes": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "diabetes_type_1_type_2_gestational"
+  },
+  "urinary tract infection / cystitis": {
+    "category": "kidney_urinary",
+    "subcategory": "urinary_tract_infections"
+  },
+  "urinary tract infections": {
+    "category": "kidney_urinary",
+    "subcategory": "urinary_tract_infections"
+  },
+  "urticaria": {
+    "category": "skin_dermatology",
+    "subcategory": "urticaria_allergic_skin"
+  },
+  "urticaria & allergic skin": {
+    "category": "skin_dermatology",
+    "subcategory": "urticaria_allergic_skin"
+  },
+  "uti / bladder infection": {
+    "category": "kidney_urinary",
+    "subcategory": "urinary_tract_infections"
+  },
+  "uveitis": {
+    "category": "eye_health",
+    "subcategory": "uveitis"
+  },
+  "vaccination": {
+    "category": "public_health_prevention",
+    "subcategory": "vaccination_immunization"
+  },
+  "vaccination & immunization": {
+    "category": "public_health_prevention",
+    "subcategory": "vaccination_immunization"
+  },
+  "vaccination schedule": {
+    "category": "childrens_health",
+    "subcategory": "vaccination_schedule"
+  },
+  "vaccines": {
+    "category": "infections",
+    "subcategory": "vaccines_immunization"
+  },
+  "vaccines & immunization": {
+    "category": "infections",
+    "subcategory": "vaccines_immunization"
+  },
+  "valvular heart disease": {
+    "category": "heart_blood_vessels",
+    "subcategory": "valvular_heart_disease"
+  },
+  "vasomotor symptoms of menopause": {
+    "category": "womens_reproductive",
+    "subcategory": "menopause"
+  },
+  "vertigo": {
+    "category": "ear_nose_throat",
+    "subcategory": "vertigo_balance_disorders"
+  },
+  "vertigo & balance disorders": {
+    "category": "ear_nose_throat",
+    "subcategory": "vertigo_balance_disorders"
+  },
+  "vertigo (spinning) vs lightheadedness (presyncope)": {
+    "category": "ear_nose_throat",
+    "subcategory": "vertigo_balance_disorders"
+  },
+  "viral gastroenteritis": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral infections": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral infections (hiv, hepatitis, influenza)": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral infections hepatitis": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral infections hiv": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral infections influenza": {
+    "category": "infections",
+    "subcategory": "viral_infections_hiv_hepatitis_influenza"
+  },
+  "viral skin infections": {
+    "category": "skin_dermatology",
+    "subcategory": "skin_infections_fungal_bacterial_viral"
+  },
+  "vitamin deficiencies": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "vitamin_deficiencies_supplements"
+  },
+  "vitamin deficiencies & supplements": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "vitamin_deficiencies_supplements"
+  },
+  "vitamin deficiency": {
+    "category": "hormones_metabolism_nutrition",
+    "subcategory": "vitamin_deficiencies_supplements"
+  },
+  "wound healing": {
+    "category": "skin_dermatology",
+    "subcategory": "wound_healing"
+  }
+}
