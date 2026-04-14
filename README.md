@@ -7,7 +7,7 @@
 
 > A multi-agent framework for consumer health query processing that combines hybrid search (semantic, lexical, and knowledge-graph retrieval) with personalization based on user health literacy, conditions, and demographics.
 
-**Authors:** [@ashcastelinocs124](https://github.com/ashcastelinocs124), Keshav, Blazej
+**Authors:** [Ash Castelino](https://github.com/ashcastelinocs124), [Keshav Trikha](https://github.com/ktrikha2), [Blazej Madrzyk](https://github.com/madrzyk2)
 
 ---
 
