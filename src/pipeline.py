@@ -10,7 +10,6 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     import psycopg2
     from openai import OpenAI
-    from anthropic import Anthropic
 
 from src.agents.context import QueryContext, PipelineResult
 from src.agents.agent_a import QueryUnderstandingAgent
@@ -30,8 +29,9 @@ class Pipeline:
 
     Args:
         db_conn: Active psycopg2 connection to the shared RDS Postgres database.
-        openai_client: Initialised ``openai.OpenAI`` client (used for embeddings).
-        anthropic_client: Initialised ``anthropic.Anthropic`` client (used for Claude calls).
+        openai_client: Initialised ``openai.OpenAI`` client (used for embeddings
+            and all LLM calls — GPT-4o).
+        anthropic_client: Deprecated, ignored. Kept for backward compatibility.
         brain_dir: Path to the ``brain/`` directory. Defaults to ``"brain"`` (relative
             to the process working directory, or an absolute path).
     """
@@ -40,10 +40,10 @@ class Pipeline:
         self,
         db_conn,
         openai_client: "OpenAI",
-        anthropic_client: "Anthropic | None" = None,
+        anthropic_client: object | None = None,  # deprecated, ignored
         brain_dir: str = "brain",
         build_centroids: bool = True,
-        use_gpt4o: bool = False,
+        use_gpt4o: bool = True,
         memory_dir: str | None = None,
     ) -> None:
         # Build shared graph components once at startup (read-only, shared across queries)
@@ -63,7 +63,7 @@ class Pipeline:
         self._agent_a = QueryUnderstandingAgent(
             db_conn=db_conn,
             openai_client=openai_client,
-            anthropic_client=None if use_gpt4o else anthropic_client,
+            anthropic_client=None,
             brain_dir=brain_dir,
             memory_store=memory_store,
         )
@@ -94,6 +94,7 @@ class Pipeline:
         user_profile: UserProfile,
         return_context: bool = False,
         weight_overrides: dict[str, float] | None = None,
+        model: str = "gpt-5.4",
     ) -> "PipelineResult | tuple[PipelineResult, QueryContext]":
         """Run a consumer health query through the full four-agent pipeline.
 
@@ -111,7 +112,7 @@ class Pipeline:
             ``PipelineResult`` by default.  ``(PipelineResult, QueryContext)`` when
             *return_context* is True.
         """
-        ctx = QueryContext(query=query, user_profile=user_profile)
+        ctx = QueryContext(query=query, user_profile=user_profile, model=model)
 
         ctx = await self._agent_a.run(ctx)
         ctx = await self._agent_b.run(ctx, weight_overrides=weight_overrides)

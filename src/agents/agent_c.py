@@ -2,7 +2,7 @@
 """Evidence Synthesis Agent (Agent C).
 
 Runs hybrid search using the retrieval plan from Agent B, then calls
-Claude to synthesize a personalized answer grounded in the retrieved
+GPT-4o to synthesize a personalized answer grounded in the retrieved
 evidence. Populates ctx.search_results, ctx.raw_answer, and
 ctx.raw_citations.
 """
@@ -13,7 +13,6 @@ import asyncio
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from anthropic import Anthropic
     from openai import OpenAI
     from src.search.hybrid import HybridSearcher
 
@@ -33,18 +32,17 @@ class SynthesisAgent:
 
     Args:
         searcher: A HybridSearcher instance used to retrieve relevant records.
-        anthropic_client: An initialised Anthropic client used to call Claude.
-        openai_client: An initialised OpenAI client used as fallback when anthropic_client is None.
+        anthropic_client: Deprecated, ignored. Kept for backward compatibility.
+        openai_client: An initialised OpenAI client used to call GPT-4o.
     """
 
     def __init__(
         self,
         searcher: "HybridSearcher",
-        anthropic_client: "Anthropic | None" = None,
+        anthropic_client: object | None = None,  # deprecated, ignored
         openai_client: "OpenAI | None" = None,
     ) -> None:
         self._searcher = searcher
-        self._anthropic = anthropic_client
         self._openai = openai_client
 
     async def run(self, ctx: QueryContext) -> QueryContext:
@@ -75,28 +73,19 @@ class SynthesisAgent:
         # Format retrieved evidence for the user message
         evidence = self._format_evidence(results)
 
-        # Call LLM for synthesis — prefer Anthropic, fall back to OpenAI
+        # Call OpenAI for synthesis — model selected per-query via ctx.model
+        model = getattr(ctx, "model", None) or "gpt-5.4"
         user_message = f"Query: {ctx.query}\n\nEvidence:\n{evidence}"
-        if self._anthropic is not None:
-            response = await asyncio.to_thread(
-                self._anthropic.messages.create,
-                model="claude-sonnet-4-6",
-                max_tokens=4096,
-                system=system_prompt,
-                messages=[{"role": "user", "content": user_message}],
-            )
-            ctx.raw_answer = response.content[0].text.strip()
-        else:
-            response = await asyncio.to_thread(
-                self._openai.chat.completions.create,
-                model="gpt-4o",
-                max_tokens=4096,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_message},
-                ],
-            )
-            ctx.raw_answer = response.choices[0].message.content.strip()
+        response = await asyncio.to_thread(
+            self._openai.chat.completions.create,
+            model=model,
+            max_completion_tokens=4096,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_message},
+            ],
+        )
+        ctx.raw_answer = response.choices[0].message.content.strip()
 
         # Extract citations from search results
         ctx.raw_citations = [

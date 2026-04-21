@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MedAgent — Ask AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #f6f5f3;
+    --card: #ffffff;
+    --card-alt: #fbfafc;
+    --ink: #1a1a1f;
+    --ink-2: #2b2b33;
+    --muted: #6b6c75;
+    --muted-2: #9a9ba3;
+    --rule: #ececf0;
+    --rule-2: #e4e4ea;
+    --accent: #6a4dff;
+    --accent-soft: #ece8ff;
+    --accent-deep: #4d33d1;
+    --highlight-a: #c9bcff;
+    --highlight-b: #ffd6b8;
+    --pill-bg: #f1f0f4;
+    --pill-active: #1a1a1f;
+    --success: #22a55f;
+    --danger: #d0464a;
+    --badge-purple: #7a5bff;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    font-feature-settings: "cv11", "ss01", "ss03";
+  }
+
+  .layout {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .main-pane {
+    flex: 1;
+    display: flex;
+    justify-content: stretch;
+    padding: 0;
+    min-width: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .shell {
+    width: 100%;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
+  }
+
+  /* ── Sidebar ─────────────────────────────────────── */
+  .sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border-right: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .sb-top {
+    padding: 18px 14px 10px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sb-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px 14px;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .sb-brand .spark {
+    width: 22px; height: 22px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent) 0%, #8a6dff 100%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .sb-new-chat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--ink);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .sb-new-chat:hover { background: #2d2d35; }
+  .sb-new-chat svg { width: 16px; height: 16px; }
+
+  .sb-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 14px 8px 8px;
+  }
+
+  .sb-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted-2);
+    padding: 6px 10px 10px;
+    font-weight: 600;
+  }
+
+  .hist-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--ink-2);
+    font-size: 13.5px;
+    line-height: 1.3;
+    transition: background 0.12s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+  .hist-item:hover { background: var(--pill-bg); }
+  .hist-item.active { background: var(--accent-soft); color: var(--accent-deep); font-weight: 500; }
+  .hist-item .hist-title {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hist-item .hist-delete {
+    opacity: 0;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    color: var(--muted);
+    transition: opacity 0.15s, background 0.15s;
+  }
+  .hist-item:hover .hist-delete { opacity: 1; }
+  .hist-item .hist-delete:hover { background: rgba(208, 70, 74, 0.12); color: var(--danger); }
+  .hist-item .hist-delete svg { width: 13px; height: 13px; }
+
+  .hist-empty {
+    padding: 20px 14px;
+    color: var(--muted-2);
+    font-size: 12.5px;
+    text-align: center;
+  }
+
+  .sb-bottom {
+    border-top: 1px solid var(--rule);
+    padding: 10px;
+  }
+
+  .profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .profile-btn:hover { background: var(--pill-bg); border-color: var(--rule-2); }
+
+  .profile-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent) 0%, #8a6dff 100%);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .profile-body { flex: 1; min-width: 0; }
+  .profile-name {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .profile-sub {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.2;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .profile-btn .gear {
+    color: var(--muted-2);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ── Card ───────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    font-size: 14.5px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .logo-chip .spark {
+    width: 18px; height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+
+  .beta-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    background: var(--pill-bg);
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .header-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.15s;
+    user-select: none;
+  }
+  .header-action:hover { color: var(--ink); }
+  .header-action svg { width: 15px; height: 15px; }
+
+  .kebab {
+    width: 28px; height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .kebab:hover { background: var(--pill-bg); color: var(--ink); }
+
+  /* ── Conversation ───────────────────────────────── */
+  .conversation {
+    flex: 1;
+    padding: 26px max(32px, calc((100% - 880px) / 2)) 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 0;
+  }
+  .conversation::-webkit-scrollbar { width: 8px; }
+  .conversation::-webkit-scrollbar-track { background: transparent; }
+  .conversation::-webkit-scrollbar-thumb { background: var(--rule-2); border-radius: 4px; }
+
+  .day-divider {
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 12.5px;
+    margin: 10px 0 6px;
+    letter-spacing: 0.01em;
+  }
+
+  /* User bubble — right aligned */
+  .msg-user {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .msg-user .bubble {
+    max-width: 72%;
+    background: var(--pill-bg);
+    color: var(--ink);
+    padding: 10px 16px;
+    border-radius: 18px;
+    font-size: 14.5px;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+  }
+
+  /* Assistant block — left */
+  .msg-assistant {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .msg-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 12.5px;
+  }
+  .msg-meta-row .ref {
+    background: var(--pill-bg);
+    padding: 2px 9px;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .answer-body {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 720px;
+  }
+  .answer-body p { margin: 8px 0; }
+  .answer-body p:first-child { margin-top: 0; }
+  .answer-body strong { color: var(--ink); font-weight: 600; }
+  .answer-body em { font-style: italic; color: var(--ink-2); }
+  .answer-body a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(106, 77, 255, 0.35); }
+  .answer-body h1, .answer-body h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 14px 0 4px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .answer-body h3 {
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 12px 0 4px;
+    color: var(--ink);
+  }
+  .answer-body ul, .answer-body ol { padding-left: 22px; margin: 8px 0; }
+  .answer-body li { margin-bottom: 4px; }
+  .answer-body code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.88em;
+    background: var(--pill-bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+  .answer-body blockquote {
+    border-left: 2px solid var(--rule-2);
+    padding: 2px 0 2px 14px;
+    margin: 12px 0;
+    color: var(--muted);
+  }
+  .answer-body table { border-collapse: collapse; margin: 10px 0; font-size: 13.5px; width: 100%; }
+  .answer-body th, .answer-body td { border-bottom: 1px solid var(--rule); padding: 6px 10px; text-align: left; }
+  .answer-body th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  /* Inline highlights */
+  .hl-a { background: linear-gradient(transparent 60%, var(--highlight-a) 60%); padding: 0 1px; border-radius: 2px; }
+  .hl-b { background: linear-gradient(transparent 60%, var(--highlight-b) 60%); padding: 0 1px; border-radius: 2px; }
+  .ref-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px; height: 18px;
+    background: var(--badge-purple);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 600;
+    margin: 0 2px;
+    vertical-align: middle;
+    padding: 0 5px;
+  }
+
+  /* Reply badge (floating) */
+  .reply-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 10px 10px 10px 2px;
+    font-size: 11px;
+    font-weight: 500;
+    position: relative;
+    transform: translateY(-1px);
+    margin: 0 3px;
+    box-shadow: 0 4px 10px -4px rgba(106, 77, 255, 0.45);
+  }
+  .reply-badge svg { width: 11px; height: 11px; }
+
+  /* Confidence + disclaimer */
+  .answer-foot {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 720px;
+  }
+  .confidence {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 12px;
+    align-items: center;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .confidence .track {
+    height: 4px;
+    background: var(--rule);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .confidence .fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .confidence .fill.low { background: var(--danger); }
+  .confidence .fill.med { background: #d08a22; }
+  .confidence .val {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .disclaimer, .flags {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .disclaimer {
+    background: #fff4e4;
+    color: #8a5a1b;
+  }
+  .disclaimer svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; color: #c88227; }
+
+  .flags {
+    background: #fff0ec;
+    color: #a24026;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .flags strong {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #a24026;
+  }
+  .flags ul { margin: 0; padding-left: 18px; }
+
+  /* Follow-up suggestions */
+  .suggestions {
+    margin-top: 8px;
+    padding: 14px 16px 4px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sug-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .sug-toolbar .keycap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px; height: 22px;
+    background: var(--pill-bg);
+    border-radius: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    padding: 0 6px;
+    color: var(--ink-2);
+  }
+  .sug-toolbar .spacer { flex: 1; }
+  .sug-toolbar .close-btn {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    cursor: pointer;
+    color: var(--muted);
+  }
+  .sug-toolbar .close-btn:hover { color: var(--ink); }
+
+  .sug-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 8px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink-2);
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .sug-item:hover { background: var(--pill-bg); }
+  .sug-item.active { background: var(--pill-bg); color: var(--ink); font-weight: 500; }
+  .sug-item .sug-arrow {
+    width: 22px; height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* Selection chip (mimicking the "selected text" strip above composer) */
+  .selection-chip {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px;
+    background: var(--accent-soft);
+    border: 1px solid rgba(106, 77, 255, 0.18);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    font-size: 13.5px;
+    color: var(--accent-deep);
+    animation: slideUp 0.25s ease;
+  }
+  .selection-chip.visible { display: flex; }
+  .selection-chip .left {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .selection-chip .dot {
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .selection-chip .label {
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 500;
+  }
+  .selection-chip .dismiss {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent-deep);
+    font-size: 16px;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+
+  /* Composer */
+  .composer-wrap {
+    padding: 14px max(22px, calc((100% - 880px) / 2)) 18px;
+    border-top: 1px solid var(--rule);
+    background: var(--card);
+  }
+  .composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    background: #f3f2f6;
+    border-radius: 14px;
+    padding: 8px 10px 8px 14px;
+    border: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .composer:focus-within { border-color: rgba(106, 77, 255, 0.35); background: #fff; }
+
+  .model-picker {
+    position: relative;
+  }
+  .composer .speed-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px 5px 10px;
+    background: #ffe0f1;
+    color: #a12972;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 0.15s, background 0.15s;
+    user-select: none;
+  }
+  .composer .speed-pill:hover { border-color: rgba(210, 62, 149, 0.4); }
+  .composer .speed-pill .sp-dot {
+    width: 6px; height: 6px; background: #d23e95; border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(210, 62, 149, 0.25);
+  }
+  .composer .speed-pill .chev {
+    font-size: 10px;
+    opacity: 0.7;
+    transition: transform 0.2s;
+  }
+  .composer .speed-pill.open .chev { transform: rotate(180deg); }
+
+  .model-menu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    min-width: 240px;
+    background: #fff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    box-shadow: 0 8px 28px -10px rgba(20, 20, 40, 0.18);
+    padding: 6px;
+    z-index: 10;
+    display: none;
+    animation: slideUp 0.18s ease;
+  }
+  .model-menu.open { display: block; }
+
+  .model-menu .mm-header {
+    padding: 8px 10px 6px;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .model-menu .mm-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .model-menu .mm-item:hover { background: var(--pill-bg); }
+  .model-menu .mm-item.selected { background: var(--accent-soft); }
+  .model-menu .mm-item .mm-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  }
+  .model-menu .mm-item .mm-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .model-menu .mm-item .mm-desc {
+    font-size: 12px;
+    color: var(--muted);
+    grid-column: 2 / 3;
+    grid-row: 2;
+    margin-top: 2px;
+  }
+  .model-menu .mm-item .mm-tick {
+    color: var(--accent);
+    opacity: 0;
+    font-size: 14px;
+  }
+  .model-menu .mm-item.selected .mm-tick { opacity: 1; }
+
+  .composer textarea {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    resize: none;
+    max-height: 180px;
+    min-height: 28px;
+    font-family: inherit;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 6px 0;
+  }
+  .composer textarea::placeholder {
+    color: var(--muted-2);
+  }
+
+  .composer .tool-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .tool-btn {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    background: transparent;
+    border: none;
+  }
+  .tool-btn:hover { background: var(--pill-bg); color: var(--ink); }
+  .tool-btn svg { width: 16px; height: 16px; }
+
+  .send-btn {
+    width: 34px; height: 34px;
+    background: var(--ink);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-left: 4px;
+  }
+  .send-btn:hover:not(:disabled) { background: var(--accent); }
+  .send-btn:disabled { background: var(--rule-2); color: var(--muted-2); cursor: not-allowed; }
+  .send-btn svg { width: 14px; height: 14px; }
+
+  /* Empty state */
+  .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+    gap: 10px;
+    color: var(--muted);
+  }
+  .empty-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  .empty-sub {
+    font-size: 14px;
+    max-width: 460px;
+    margin-bottom: 10px;
+  }
+  .empty .sug-item {
+    max-width: 560px;
+    width: 100%;
+    text-align: left;
+    background: var(--card);
+    border: 1px solid var(--rule);
+  }
+  .empty .sug-item:hover { background: var(--pill-bg); border-color: var(--rule-2); }
+
+  /* Thinking */
+  .thinking {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .thinking .dots { display: inline-flex; gap: 4px; }
+  .thinking .dots span {
+    width: 6px; height: 6px; background: var(--accent); border-radius: 50%;
+    animation: bounce 1.1s infinite;
+  }
+  .thinking .dots span:nth-child(2) { animation-delay: 0.15s; }
+  .thinking .dots span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes bounce {
+    0%, 80%, 100% { opacity: 0.35; transform: translateY(0); }
+    40% { opacity: 1; transform: translateY(-3px); }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-assistant, .msg-user, .suggestions { animation: slideUp 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+
+  /* Citations inline row */
+  .cite-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .cite-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--pill-bg);
+    border-radius: 999px;
+    font-size: 11.5px;
+    color: var(--muted);
+    cursor: default;
+  }
+  .cite-tag .tier {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  }
+  .cite-tag .tier.A { background: #22a55f; }
+  .cite-tag .tier.B { background: #3b82f6; }
+  .cite-tag .tier.C { background: #d08a22; }
+  .cite-tag .tier.D { background: var(--danger); }
+
+  /* Footer note beneath card */
+  .footnote {
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 11.5px;
+    padding: 6px 12px 8px;
+    background: var(--card);
+    border-top: 1px solid var(--rule);
+  }
+  .footnote a { color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--rule-2); }
+  .footnote a:hover { color: var(--ink); }
+
+  @media (max-width: 960px) {
+    .sidebar { width: 240px; }
+  }
+  @media (max-width: 720px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--rule); }
+    .sb-history { max-height: 200px; }
+    .main-pane { padding: 20px 12px 40px; }
+    .conversation { padding: 20px 18px 16px; }
+    .composer-wrap { padding: 12px 14px 14px; }
+    .header { padding: 12px 16px; }
+    .msg-user .bubble { max-width: 85%; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- ── Sidebar ──────────────────────── -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="sb-brand">
+        <span class="spark">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+            <path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2z"/>
+          </svg>
+        </span>
+        MedAgent
+      </div>
+      <button class="sb-new-chat" id="new-chat-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+        </svg>
+        New chat
+      </button>
+    </div>
+    <div class="sb-history" id="sb-history">
+      <div class="sb-label">Recent</div>
+      <div class="hist-empty" id="hist-empty">No conversations yet</div>
+    </div>
+    <div class="sb-bottom">
+      <a class="profile-btn" href="/onboarding" id="profile-btn" title="Edit your health profile">
+        <span class="profile-avatar" id="profile-avatar">M</span>
+        <span class="profile-body">
+          <span class="profile-name" id="profile-name">My Profile</span>
+          <span class="profile-sub" id="profile-sub">Tap to edit preferences</span>
+        </span>
+        <svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ── Main pane ──────────────────────── -->
+  <div class="main-pane">
+<div class="shell">
+  <div class="card">
+    <!-- ── Header ──────────────────────── -->
+    <div class="header">
+      <div class="header-left">
+        <span class="logo-chip">
+          <span class="spark">
+            <!-- Sparkle icon -->
+            <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+              <path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2zm7 10l.9 2.7L22.5 15.5l-2.7.9L19 19l-.8-2.7L15.5 15.5l2.7-.8L19 12z"/>
+            </svg>
+          </span>
+          Ask AI
+        </span>
+        <span class="beta-pill">Q&amp;A Beta</span>
+      </div>
+      <div class="header-right">
+        <span class="header-action" title="Save conversation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Save
+        </span>
+        <span class="header-action" title="Copy link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        </span>
+        <span class="kebab" title="More">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+            <circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- ── Conversation ──────────────────────── -->
+    <div class="conversation" id="conversation">
+      <div class="empty" id="empty-state">
+        <div class="empty-title">Ask anything about your health.</div>
+        <div class="empty-sub">MedAgent routes every question through four specialist agents: query understanding, retrieval planning, evidence synthesis, and verification.</div>
+
+        <div class="sug-item" data-prompt="What are the early warning signs of a heart attack, and how do they differ in women?">
+          <span class="sug-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          What are the early warning signs of a heart attack, and how do they differ in women?
+        </div>
+        <div class="sug-item" data-prompt="Is it safe to take ibuprofen and acetaminophen together?">
+          <span class="sug-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          Is it safe to take ibuprofen and acetaminophen together?
+        </div>
+        <div class="sug-item" data-prompt="How can I tell if my persistent headache is a migraine or something more serious?">
+          <span class="sug-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          How can I tell if my persistent headache is a migraine or something more serious?
+        </div>
+        <div class="sug-item" data-prompt="What does an HbA1c of 6.2 mean, and what should I do about it?">
+          <span class="sug-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          What does an HbA1c of 6.2 mean, and what should I do about it?
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Composer ──────────────────────── -->
+    <div class="composer-wrap">
+      <div class="selection-chip" id="selection-chip">
+        <div class="left">
+          <span class="dot"></span>
+          <span class="label" id="selection-label">design systems consist of reusable components</span>
+        </div>
+        <button class="dismiss" id="selection-dismiss">×</button>
+      </div>
+
+      <div class="composer">
+        <div class="model-picker">
+          <span class="speed-pill" id="model-pill" title="Choose model" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false">
+            <span class="sp-dot"></span>
+            <span id="model-label">GPT-5.4</span>
+            <span class="chev">▾</span>
+          </span>
+          <div class="model-menu" id="model-menu" role="listbox">
+            <div class="mm-header">Choose model</div>
+            <div class="mm-item" data-model="gpt-5.4" role="option">
+              <span class="mm-dot"></span>
+              <div>
+                <div class="mm-name">GPT-5.4</div>
+                <div class="mm-desc">Flagship · deepest reasoning, richest citations</div>
+              </div>
+              <span class="mm-tick">✓</span>
+            </div>
+            <div class="mm-item" data-model="gpt-5.4-mini" role="option">
+              <span class="mm-dot"></span>
+              <div>
+                <div class="mm-name">GPT-5.4 mini</div>
+                <div class="mm-desc">Balanced · faster replies, solid quality</div>
+              </div>
+              <span class="mm-tick">✓</span>
+            </div>
+            <div class="mm-item" data-model="gpt-5.4-nano" role="option">
+              <span class="mm-dot"></span>
+              <div>
+                <div class="mm-name">GPT-5.4 nano</div>
+                <div class="mm-desc">Fastest · quick look-ups, lowest latency</div>
+              </div>
+              <span class="mm-tick">✓</span>
+            </div>
+          </div>
+        </div>
+        <textarea id="composer" placeholder="Ask a question about this answer" rows="1"></textarea>
+        <div class="tool-row">
+          <button class="tool-btn" title="Information">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+          <button class="tool-btn" title="Attach">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66L9.41 17.41a2 2 0 0 1-2.83-2.83L14.12 7"></path>
+            </svg>
+          </button>
+          <button class="tool-btn" title="Search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          <button class="send-btn" id="send-btn" title="Send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    MedAgent routes via four specialist agents · <a href="/onboarding">Personalise your profile</a> · Not medical advice.
+  </div>
+</div>
+  </div><!-- /.main-pane -->
+</div><!-- /.layout -->
+
+<script>
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  const SESSION_KEY = "medagent_session_id";
+  const MODEL_KEY = "medagent_model";
+  const CONVOS_KEY = "medagent_conversations";
+  const ACTIVE_CONVO_KEY = "medagent_active_convo";
+  const MODEL_LABELS = {
+    "gpt-5.4": "GPT-5.4",
+    "gpt-5.4-mini": "GPT-5.4 mini",
+    "gpt-5.4-nano": "GPT-5.4 nano",
+  };
+  const ALLOWED_MODELS = Object.keys(MODEL_LABELS);
+
+  const params = new URLSearchParams(location.search);
+  const qsSession = params.get("session_id");
+  let sessionId = qsSession || localStorage.getItem(SESSION_KEY);
+  if (!sessionId) {
+    sessionId = crypto.randomUUID().slice(0, 8);
+    localStorage.setItem(SESSION_KEY, sessionId);
+  }
+  if (qsSession) localStorage.setItem(SESSION_KEY, qsSession);
+
+  // Current model — persisted across page loads
+  let currentModel = localStorage.getItem(MODEL_KEY);
+  if (!ALLOWED_MODELS.includes(currentModel)) currentModel = "gpt-5.4";
+
+  let msgCount = 0;
+  let isBusy = false;
+  let dayDividerShown = false;
+
+  // ── Conversation store ────────────────
+  // Shape: [{id, title, updatedAt, messages:[{role:'user'|'assistant', text?, data?}]}]
+  function loadConvos() {
+    try { return JSON.parse(localStorage.getItem(CONVOS_KEY) || "[]"); }
+    catch { return []; }
+  }
+  function saveConvos(list) {
+    localStorage.setItem(CONVOS_KEY, JSON.stringify(list.slice(0, 50)));
+  }
+  function getActiveId() { return localStorage.getItem(ACTIVE_CONVO_KEY); }
+  function setActiveId(id) {
+    if (id) localStorage.setItem(ACTIVE_CONVO_KEY, id);
+    else localStorage.removeItem(ACTIVE_CONVO_KEY);
+  }
+  function getActiveConvo() {
+    const id = getActiveId();
+    if (!id) return null;
+    return loadConvos().find((c) => c.id === id) || null;
+  }
+  function upsertConvo(convo) {
+    const list = loadConvos();
+    const idx = list.findIndex((c) => c.id === convo.id);
+    convo.updatedAt = Date.now();
+    if (idx >= 0) list[idx] = convo;
+    else list.unshift(convo);
+    list.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    saveConvos(list);
+  }
+  function deleteConvo(id) {
+    const list = loadConvos().filter((c) => c.id !== id);
+    saveConvos(list);
+    if (getActiveId() === id) {
+      setActiveId(null);
+      startNewConvo();
+    }
+    renderSidebar();
+  }
+  function makeConvoId() { return "c_" + Math.random().toString(36).slice(2, 10); }
+  function titleFromText(t) {
+    const clean = (t || "").trim().replace(/\s+/g, " ");
+    return clean.length > 48 ? clean.slice(0, 48) + "…" : (clean || "New chat");
+  }
+
+  // Prompt clicks on empty state
+  $$(".empty .sug-item").forEach((el) => {
+    el.addEventListener("click", () => {
+      const p = el.dataset.prompt;
+      $("#composer").value = p;
+      autoResize();
+      $("#composer").focus();
+    });
+  });
+
+  // Composer auto-resize
+  const composer = $("#composer");
+  function autoResize() {
+    composer.style.height = "auto";
+    composer.style.height = Math.min(composer.scrollHeight, 180) + "px";
+  }
+  composer.addEventListener("input", autoResize);
+  composer.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (!isBusy) send();
+    }
+  });
+  $("#send-btn").addEventListener("click", () => { if (!isBusy) send(); });
+
+  // Selection chip
+  $("#selection-dismiss").addEventListener("click", () => {
+    $("#selection-chip").classList.remove("visible");
+  });
+
+  // ── Model picker ──────────────────────
+  const modelPill = $("#model-pill");
+  const modelMenu = $("#model-menu");
+
+  function applyModelSelection(modelId) {
+    if (!ALLOWED_MODELS.includes(modelId)) return;
+    currentModel = modelId;
+    localStorage.setItem(MODEL_KEY, modelId);
+    $("#model-label").textContent = MODEL_LABELS[modelId];
+    modelMenu.querySelectorAll(".mm-item").forEach((el) => {
+      el.classList.toggle("selected", el.dataset.model === modelId);
+    });
+  }
+
+  function openModelMenu() {
+    modelMenu.classList.add("open");
+    modelPill.classList.add("open");
+    modelPill.setAttribute("aria-expanded", "true");
+  }
+  function closeModelMenu() {
+    modelMenu.classList.remove("open");
+    modelPill.classList.remove("open");
+    modelPill.setAttribute("aria-expanded", "false");
+  }
+  function toggleModelMenu() {
+    if (modelMenu.classList.contains("open")) closeModelMenu();
+    else openModelMenu();
+  }
+
+  modelPill.addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleModelMenu();
+  });
+  modelPill.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleModelMenu();
+    } else if (e.key === "Escape") {
+      closeModelMenu();
+    }
+  });
+
+  modelMenu.querySelectorAll(".mm-item").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.stopPropagation();
+      applyModelSelection(el.dataset.model);
+      closeModelMenu();
+      composer.focus();
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!modelMenu.contains(e.target) && !modelPill.contains(e.target)) closeModelMenu();
+  });
+
+  // Initialise selected state + label on load
+  applyModelSelection(currentModel);
+
+  // ── Helpers ─────────────────────────
+  function nowTimeStr() {
+    return new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  }
+  function pad3(n) { return String(n).padStart(3, "0"); }
+  function confidenceClass(v) {
+    if (v >= 0.8) return "";
+    if (v >= 0.5) return "med";
+    return "low";
+  }
+  function tierLabel(t) {
+    const x = String(t || "").toUpperCase();
+    if (["A","B","C","D"].includes(x)) return x;
+    if (x.startsWith("TIER")) return x.slice(-1);
+    return "?";
+  }
+
+  // Markdown-lite renderer
+  function mdToHtml(text) {
+    if (!text) return "";
+    let t = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    t = t.replace(/```([\s\S]*?)```/g, (_, c) => `<pre><code>${c}</code></pre>`);
+    t = t.replace(/`([^`]+)`/g, "<code>$1</code>");
+    t = t.replace(/^###\s+(.+)$/gm, "<h3>$1</h3>");
+    t = t.replace(/^##\s+(.+)$/gm, "<h2>$1</h2>");
+    t = t.replace(/^#\s+(.+)$/gm, "<h1>$1</h1>");
+    t = t.replace(/^>\s+(.+)$/gm, "<blockquote>$1</blockquote>");
+    t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    t = t.replace(/(^|[^*])\*([^*]+)\*/g, "$1<em>$2</em>");
+    t = t.replace(/((?:^\s*\d+\.\s+.+\n?)+)/gm, (b) => {
+      const items = b.trim().split(/\n/).map((l) => l.replace(/^\s*\d+\.\s+/, "")).map((l) => `<li>${l}</li>`).join("");
+      return `<ol>${items}</ol>`;
+    });
+    t = t.replace(/((?:^\s*[-*]\s+.+\n?)+)/gm, (b) => {
+      const items = b.trim().split(/\n/).map((l) => l.replace(/^\s*[-*]\s+/, "")).map((l) => `<li>${l}</li>`).join("");
+      return `<ul>${items}</ul>`;
+    });
+    t = t.split(/\n{2,}/).map((p) => {
+      if (/^\s*<(h1|h2|h3|ul|ol|blockquote|pre)/.test(p)) return p;
+      return `<p>${p.replace(/\n/g, "<br>")}</p>`;
+    }).join("\n");
+    return t;
+  }
+
+  function scrollBottom() {
+    const c = $("#conversation");
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function removeEmpty() {
+    const e = $("#empty-state");
+    if (e) e.remove();
+  }
+
+  function ensureDayDivider() {
+    if (dayDividerShown) return;
+    const div = document.createElement("div");
+    div.className = "day-divider";
+    const d = new Date();
+    const day = d.toLocaleDateString("en-US", { weekday: "long" });
+    div.textContent = `Today · ${day} ${nowTimeStr()}`;
+    $("#conversation").appendChild(div);
+    dayDividerShown = true;
+  }
+
+  function renderUserMsg(text) {
+    msgCount++;
+    removeEmpty();
+    ensureDayDivider();
+    const div = document.createElement("div");
+    div.className = "msg-user";
+    div.innerHTML = `<div class="bubble"></div>`;
+    div.querySelector(".bubble").textContent = text;
+    $("#conversation").appendChild(div);
+    scrollBottom();
+    // Also show the selection chip with the user's question to match the reference UI
+    const label = $("#selection-label");
+    label.textContent = text.length > 80 ? text.slice(0, 80) + "…" : text;
+    $("#selection-chip").classList.add("visible");
+  }
+
+  function renderAssistantPending() {
+    const div = document.createElement("div");
+    div.className = "msg-assistant pending";
+    div.innerHTML = `
+      <div class="msg-meta-row">
+        <span class="ref">№ ${pad3(msgCount)}</span>
+        <span>MedAgent</span>
+        <span>·</span>
+        <span>${nowTimeStr()}</span>
+      </div>
+      <div class="thinking">
+        <span>Consulting the corpus</span>
+        <span class="dots"><span></span><span></span><span></span></span>
+      </div>
+    `;
+    $("#conversation").appendChild(div);
+    scrollBottom();
+    return div;
+  }
+
+  function renderAssistantFinal(container, data) {
+    const conf = data.confidence || 0;
+    const confPct = Math.round(conf * 100);
+    const confCls = confidenceClass(conf);
+
+    // Inject a subtle inline highlight + reply badge on the first bolded phrase if any,
+    // to mimic the reference design
+    let answerHtml = mdToHtml(data.answer_text || "");
+    let badged = false;
+    answerHtml = answerHtml.replace(/<strong>([^<]{3,60})<\/strong>/, (_, w) => {
+      if (badged) return `<strong>${w}</strong>`;
+      badged = true;
+      return `<span class="hl-a"><strong>${w}</strong></span> <span class="reply-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"></polyline><path d="M20 20v-7a4 4 0 0 0-4-4H4"></path></svg>Reply</span>`;
+    });
+
+    const disclaimerHtml = data.disclaimer
+      ? `<div class="disclaimer">
+           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+             <line x1="12" y1="9" x2="12" y2="13"></line>
+             <line x1="12" y1="17" x2="12.01" y2="17"></line>
+           </svg>
+           <span>${data.disclaimer}</span>
+         </div>`
+      : "";
+
+    const flags = data.uncertainty_flags || [];
+    const flagsHtml = flags.length
+      ? `<div class="flags">
+           <strong>Uncertainty</strong>
+           <ul>${flags.map((f) => `<li>${f}</li>`).join("")}</ul>
+         </div>`
+      : "";
+
+    const citations = data.citations || [];
+    const citesHtml = citations.length
+      ? `<div class="cite-row">
+          ${citations.slice(0, 6).map((c, i) => {
+            const t = tierLabel(c.quality_tier);
+            const src = (c.source_table || "").replace("_records", "").toUpperCase();
+            return `<span class="cite-tag"><span class="tier ${t}"></span>${i + 1} · ${src} · Tier ${t}</span>`;
+          }).join("")}
+        </div>`
+      : "";
+
+    const modelUsed = data.model && MODEL_LABELS[data.model] ? MODEL_LABELS[data.model] : (data.model || "");
+
+    container.classList.remove("pending");
+    container.innerHTML = `
+      <div class="msg-meta-row">
+        <span class="ref">№ ${pad3(msgCount)}</span>
+        <span>MedAgent</span>
+        <span>·</span>
+        <span>${data.category || "uncategorised"}</span>
+        ${modelUsed ? `<span>·</span><span style="color:var(--accent);font-weight:500">${modelUsed}</span>` : ""}
+        <span style="margin-left:auto">${nowTimeStr()}</span>
+      </div>
+      <div class="answer-body">${answerHtml}${citesHtml}</div>
+      <div class="answer-foot">
+        <div class="confidence">
+          <span>Confidence</span>
+          <div class="track"><div class="fill ${confCls}" style="width: 0%"></div></div>
+          <span class="val">${confPct}%</span>
+        </div>
+        ${disclaimerHtml}
+        ${flagsHtml}
+      </div>
+    `;
+    requestAnimationFrame(() => {
+      const fill = container.querySelector(".fill");
+      if (fill) fill.style.width = confPct + "%";
+    });
+    scrollBottom();
+
+    // Append follow-up suggestion card below assistant reply
+    appendSuggestions(data);
+  }
+
+  function appendSuggestions(data) {
+    const cat = data.category || "general";
+    const baseSugs = {
+      heart_blood_vessels: [
+        "What home remedies actually help lower blood pressure?",
+        "How do I recognise an arrhythmia vs anxiety?",
+        "What's the typical recovery timeline after a heart attack?",
+      ],
+      medications_drug_safety: [
+        "Are there any common interactions I should watch for?",
+        "What's the safest way to stop taking this medication?",
+        "How does this compare to similar drugs in its class?",
+      ],
+      brain_nervous_system: [
+        "What warning signs mean I should go to the ER?",
+        "What lifestyle changes might reduce my symptoms?",
+        "Which specialist should I see for this?",
+      ],
+    };
+    const defaults = [
+      "What are the warning signs that mean I should see a doctor now?",
+      "Are there safer alternatives or home measures first?",
+      "How long before I should expect improvement?",
+      "What questions should I ask my doctor about this?",
+    ];
+    const sugs = baseSugs[cat] || defaults;
+
+    const sug = document.createElement("div");
+    sug.className = "suggestions";
+    sug.innerHTML = `
+      <div class="sug-toolbar">
+        <span class="keycap">↑↓</span>
+        <span>to navigate</span>
+        <span class="keycap">↵</span>
+        <span>to select</span>
+        <span class="spacer"></span>
+        <span class="close-btn">
+          <span class="keycap">ESC</span>
+          <span>to close</span>
+        </span>
+      </div>
+      ${sugs.map((s, i) => `
+        <div class="sug-item ${i === 0 ? "active" : ""}" data-prompt="${s.replace(/"/g, "&quot;")}">
+          <span class="sug-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+          ${s}
+        </div>
+      `).join("")}
+    `;
+    $("#conversation").appendChild(sug);
+
+    sug.querySelectorAll(".sug-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        composer.value = el.dataset.prompt;
+        autoResize();
+        composer.focus();
+      });
+      el.addEventListener("mouseenter", () => {
+        sug.querySelectorAll(".sug-item").forEach((x) => x.classList.remove("active"));
+        el.classList.add("active");
+      });
+    });
+
+    sug.querySelector(".close-btn").addEventListener("click", () => {
+      sug.remove();
+    });
+
+    scrollBottom();
+  }
+
+  function setBusy(b) {
+    isBusy = b;
+    $("#send-btn").disabled = b;
+  }
+
+  async function send() {
+    const text = composer.value.trim();
+    if (!text) return;
+    setBusy(true);
+    renderUserMsg(text);
+    composer.value = "";
+    autoResize();
+
+    const pending = renderAssistantPending();
+
+    try {
+      const body = qsSession
+        ? { query: text, session_id: qsSession, model: currentModel }
+        : { query: text, age: 35, sex: "male", literacy: "medium", model: currentModel };
+
+      const resp = await fetch("/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        pending.innerHTML = `
+          <div class="msg-meta-row"><span class="ref">Err</span><span>Error</span></div>
+          <div class="disclaimer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>${data.error || "Request failed."}</span>
+          </div>
+        `;
+        return;
+      }
+
+      renderAssistantFinal(pending, data);
+    } catch (err) {
+      pending.innerHTML = `
+        <div class="msg-meta-row"><span class="ref">Err</span><span>Network error</span></div>
+        <div class="disclaimer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>${err.message || "The request could not be completed."}</span>
+        </div>
+      `;
+    } finally {
+      setBusy(false);
+      composer.focus();
+    }
+  }
+
+  // ── Sidebar rendering ─────────────────
+  function renderSidebar() {
+    const host = $("#sb-history");
+    const convos = loadConvos();
+    const activeId = getActiveId();
+    // Preserve the label, rebuild below it
+    host.innerHTML = `<div class="sb-label">Recent</div>`;
+    if (!convos.length) {
+      const e = document.createElement("div");
+      e.className = "hist-empty";
+      e.id = "hist-empty";
+      e.textContent = "No conversations yet";
+      host.appendChild(e);
+      return;
+    }
+    convos.forEach((c) => {
+      const item = document.createElement("div");
+      item.className = "hist-item" + (c.id === activeId ? " active" : "");
+      item.dataset.id = c.id;
+      item.innerHTML = `
+        <span class="hist-title"></span>
+        <span class="hist-delete" title="Delete conversation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6l-2 14H7L5 6"></path>
+            <path d="M10 11v6"></path><path d="M14 11v6"></path>
+          </svg>
+        </span>
+      `;
+      item.querySelector(".hist-title").textContent = c.title || "Untitled";
+      item.addEventListener("click", (e) => {
+        if (e.target.closest(".hist-delete")) return;
+        loadConvo(c.id);
+      });
+      item.querySelector(".hist-delete").addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (confirm("Delete this conversation?")) deleteConvo(c.id);
+      });
+      host.appendChild(item);
+    });
+  }
+
+  // ── Conversation rendering (from stored data) ──
+  function resetConversationView() {
+    const c = $("#conversation");
+    // Remove everything except the empty state template (we'll rebuild)
+    c.innerHTML = "";
+    msgCount = 0;
+    dayDividerShown = false;
+    $("#selection-chip").classList.remove("visible");
+  }
+
+  function renderEmptyState() {
+    const html = `
+      <div class="empty" id="empty-state">
+        <div class="empty-title">Ask anything about your health.</div>
+        <div class="empty-sub">MedAgent routes every question through four specialist agents: query understanding, retrieval planning, evidence synthesis, and verification.</div>
+        ${[
+          "What are the early warning signs of a heart attack, and how do they differ in women?",
+          "Is it safe to take ibuprofen and acetaminophen together?",
+          "How can I tell if my persistent headache is a migraine or something more serious?",
+          "What does an HbA1c of 6.2 mean, and what should I do about it?",
+        ].map((p) => `
+          <div class="sug-item" data-prompt="${p.replace(/"/g, "&quot;")}">
+            <span class="sug-arrow">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </span>${p}
+          </div>
+        `).join("")}
+      </div>
+    `;
+    $("#conversation").innerHTML = html;
+    $$(".empty .sug-item").forEach((el) => {
+      el.addEventListener("click", () => {
+        composer.value = el.dataset.prompt;
+        autoResize();
+        composer.focus();
+      });
+    });
+  }
+
+  function replayConvo(convo) {
+    resetConversationView();
+    if (!convo || !convo.messages || !convo.messages.length) {
+      renderEmptyState();
+      return;
+    }
+    convo.messages.forEach((m) => {
+      if (m.role === "user") {
+        renderUserMsg(m.text);
+      } else if (m.role === "assistant" && m.data) {
+        const pending = renderAssistantPending();
+        renderAssistantFinal(pending, m.data);
+      }
+    });
+  }
+
+  function loadConvo(id) {
+    const convo = loadConvos().find((c) => c.id === id);
+    if (!convo) return;
+    setActiveId(id);
+    replayConvo(convo);
+    renderSidebar();
+  }
+
+  function startNewConvo() {
+    setActiveId(null);
+    resetConversationView();
+    renderEmptyState();
+    renderSidebar();
+    composer.focus();
+  }
+
+  // Persist the active conversation after each turn
+  function persistTurn(userText, data) {
+    let convo = getActiveConvo();
+    if (!convo) {
+      convo = { id: makeConvoId(), title: titleFromText(userText), messages: [] };
+      setActiveId(convo.id);
+    }
+    convo.messages.push({ role: "user", text: userText });
+    convo.messages.push({ role: "assistant", data });
+    if (convo.messages.length === 2) convo.title = titleFromText(userText);
+    upsertConvo(convo);
+    renderSidebar();
+  }
+
+  // Hook: wrap send() so we persist after final render
+  const _originalSend = send;
+  send = async function () {
+    const text = composer.value.trim();
+    if (!text) return;
+    setBusy(true);
+    renderUserMsg(text);
+    composer.value = "";
+    autoResize();
+    const pending = renderAssistantPending();
+    try {
+      const body = qsSession
+        ? { query: text, session_id: qsSession, model: currentModel }
+        : { query: text, age: 35, sex: "male", literacy: "medium", model: currentModel };
+      const resp = await fetch("/query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        pending.innerHTML = `
+          <div class="msg-meta-row"><span class="ref">Err</span><span>Error</span></div>
+          <div class="disclaimer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span>${data.error || "Request failed."}</span>
+          </div>`;
+        return;
+      }
+      renderAssistantFinal(pending, data);
+      persistTurn(text, data);
+    } catch (err) {
+      pending.innerHTML = `
+        <div class="msg-meta-row"><span class="ref">Err</span><span>Network error</span></div>
+        <div class="disclaimer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>${err.message || "The request could not be completed."}</span>
+        </div>`;
+    } finally {
+      setBusy(false);
+      composer.focus();
+    }
+  };
+
+  $("#new-chat-btn").addEventListener("click", startNewConvo);
+
+  // Profile button — if user has an onboarding session_id, send them back with it preserved
+  if (qsSession) {
+    $("#profile-btn").href = `/onboarding?session_id=${encodeURIComponent(qsSession)}`;
+    $("#profile-sub").textContent = "Profile linked · tap to update";
+  }
+
+  // Initial render: either replay active convo or show empty state
+  const _active = getActiveConvo();
+  if (_active && _active.messages.length) replayConvo(_active);
+  renderSidebar();
+
+  autoResize();
+  composer.focus();
+</script>
+</body>
+</html>

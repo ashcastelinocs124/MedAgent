@@ -26,17 +26,19 @@ def mock_searcher():
 
 
 @pytest.fixture
-def mock_anthropic():
+def mock_openai():
     client = MagicMock()
-    msg = MagicMock()
-    msg.content = [MagicMock(text="Metformin is used to treat type 2 diabetes by lowering blood sugar.")]
-    client.messages.create.return_value = msg
+    resp = MagicMock()
+    resp.choices = [MagicMock(message=MagicMock(
+        content="Metformin is used to treat type 2 diabetes by lowering blood sugar."
+    ))]
+    client.chat.completions.create.return_value = resp
     return client
 
 
 @pytest.fixture
-def agent(mock_searcher, mock_anthropic):
-    return SynthesisAgent(searcher=mock_searcher, anthropic_client=mock_anthropic)
+def agent(mock_searcher, mock_openai):
+    return SynthesisAgent(searcher=mock_searcher, openai_client=mock_openai)
 
 
 @pytest.mark.asyncio
@@ -80,11 +82,14 @@ async def test_prompt_includes_literacy_instruction(agent, profile):
 
     captured_prompt = []
     def capture(*args, **kwargs):
-        captured_prompt.append(kwargs.get("system", ""))
-        m = MagicMock()
-        m.content = [MagicMock(text="Simple answer.")]
-        return m
+        # OpenAI system prompt is the first message in the messages list
+        msgs = kwargs.get("messages", [])
+        system_msg = next((m["content"] for m in msgs if m.get("role") == "system"), "")
+        captured_prompt.append(system_msg)
+        resp = MagicMock()
+        resp.choices = [MagicMock(message=MagicMock(content="Simple answer."))]
+        return resp
 
-    agent._anthropic.messages.create = capture
+    agent._openai.chat.completions.create = capture
     await agent.run(ctx)
     assert any("simple" in p.lower() or "plain" in p.lower() or "grade" in p.lower() for p in captured_prompt)

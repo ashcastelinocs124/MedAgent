@@ -13,10 +13,11 @@ import uuid
 from contextlib import asynccontextmanager
 
 import psycopg2
-from anthropic import Anthropic
 from dotenv import load_dotenv
+from pathlib import Path
+
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from openai import OpenAI
 
 from src.agents.context import PipelineResult
@@ -47,8 +48,7 @@ async def lifespan(app: FastAPI):
     global _pipeline, _openai_client, _builder, _merger
     conn = psycopg2.connect(os.environ["DATABASE_URL"])
     openai_client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
-    anthropic_client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    _pipeline = Pipeline(conn, openai_client, anthropic_client, build_centroids=True, memory_dir="users")
+    _pipeline = Pipeline(conn, openai_client, None, build_centroids=True, memory_dir="users")
     _openai_client = openai_client
     base_graph = build_base_graph()
     _builder = UserSubgraphBuilder(base_graph)
@@ -191,7 +191,7 @@ _HTML = """<!DOCTYPE html>
 
       <div class="step">
         <div class="step-label"><span class="badge badge-c">C</span> Evidence Synthesis</div>
-        <div class="step-value"><span id="r-citation-count">—</span> sources retrieved · Claude claude-sonnet-4-6 synthesized response</div>
+        <div class="step-value"><span id="r-citation-count">—</span> sources retrieved · OpenAI gpt-4o synthesized response</div>
       </div>
 
       <div class="step">
@@ -899,13 +899,26 @@ loadConditions();
 
 @app.get("/", response_class=HTMLResponse)
 async def index():
+    """Serve the official chat interface (sidebar + conversation history)."""
+    return FileResponse(Path(__file__).parent / "static" / "chat.html")
+
+
+@app.get("/chat", response_class=HTMLResponse)
+async def chat():
+    """Alias for the chat interface (kept for backwards compatibility)."""
+    return FileResponse(Path(__file__).parent / "static" / "chat.html")
+
+
+@app.get("/legacy", response_class=HTMLResponse)
+async def legacy_search():
+    """Legacy search page (previous agent-step visualization UI)."""
     return _HTML
 
 
 @app.get("/onboarding", response_class=HTMLResponse)
 async def onboarding():
     """Serve the 4-step profile onboarding wizard."""
-    return _ONBOARDING_HTML
+    return FileResponse(Path(__file__).parent / "static" / "onboarding.html")
 
 
 # ── Condition Checklist Endpoint ─────────────────────────────────────────────
@@ -1064,6 +1077,10 @@ async def profile_clarify(body: dict):
 # ── Query Endpoint ───────────────────────────────────────────────────────────
 
 
+ALLOWED_MODELS = {"gpt-5.4", "gpt-5.4-mini", "gpt-5.4-nano"}
+DEFAULT_MODEL = "gpt-5.4"
+
+
 @app.post("/query")
 async def query(body: dict):
     if _pipeline is None:
@@ -1073,6 +1090,10 @@ async def query(body: dict):
     session_id = body.get("session_id")
     session = _sessions.get(session_id) if session_id else None
     weight_overrides = session["weights"] if session else None
+
+    # Validate requested model (from the chat UI model picker)
+    requested_model = body.get("model") or DEFAULT_MODEL
+    model = requested_model if requested_model in ALLOWED_MODELS else DEFAULT_MODEL
 
     if session:
         profile = session["profile"]
@@ -1093,7 +1114,7 @@ async def query(body: dict):
 
     try:
         result: PipelineResult = await _pipeline.run(
-            body["query"], profile, weight_overrides=weight_overrides,
+            body["query"], profile, weight_overrides=weight_overrides, model=model,
         )
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
@@ -1106,6 +1127,7 @@ async def query(body: dict):
         "category": result.category,
         "classification_method": result.debug.get("classification_method"),
         "normalized_terms": result.debug.get("normalized_terms", []),
+        "model": model,
         "debug": {
             "graph_must_load": result.debug.get("graph_must_load", []),
             "graph_may_load": result.debug.get("graph_may_load", []),

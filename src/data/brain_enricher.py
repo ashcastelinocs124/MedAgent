@@ -6,7 +6,7 @@ Provides two modes of brain enrichment:
 1. Data-driven (free, no API):
    compute_category_links(stats) -> derives category links from co-occurrence
 
-2. Claude API (requires ANTHROPIC_API_KEY):
+2. OpenAI API (requires OPENAI_API_KEY):
    enrich_category_with_claude(...)  -> generates rich knowledge sections per category
    enrich_general_rules_with_claude(...) -> regenerates general_rules.md from data patterns
 
@@ -21,7 +21,7 @@ import os
 from collections import Counter, defaultdict
 
 # Imported at call-time to avoid hard dependency when not using --enrich
-# from anthropic import Anthropic
+# from openai import OpenAI
 
 # Keep in sync with categorize.py
 CATEGORY_LABELS = {
@@ -81,29 +81,29 @@ def enrich_category_with_claude(
     links: dict,
 ) -> dict:
     """
-    Call Claude API to generate rich knowledge sections for a single category.
+    Call OpenAI API (GPT-4o) to generate rich knowledge sections for a single category.
 
     Sends the top 30 TIER_A questions (with their exp field) plus co-occurrence
     link data as context. Returns a dict with keys:
         subcategories, source_priority, source_priority_rationale,
         terminology_map, query_patterns, rules, pitfalls, dominant_style
 
-    Requires ANTHROPIC_API_KEY in environment.
+    Requires OPENAI_API_KEY in environment.
     """
     try:
-        from anthropic import Anthropic
+        from openai import OpenAI
     except ImportError:
         raise RuntimeError(
-            "anthropic package not installed. Run: pip install anthropic"
+            "openai package not installed. Run: pip install openai"
         )
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError(
-            "ANTHROPIC_API_KEY not set. Add it to your .env file."
+            "OPENAI_API_KEY not set. Add it to your .env file."
         )
 
-    client = Anthropic(api_key=api_key)
+    client = OpenAI(api_key=api_key)
 
     total = stats["by_category"].get(cat, 0)
     tiers = stats["by_tier_category"].get(cat, {})
@@ -174,13 +174,13 @@ Requirements:
 - pitfalls: 3-4 entries grounded in the sample data
 - Return ONLY the JSON object, no extra text before or after"""
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         max_tokens=2048,
         messages=[{"role": "user", "content": prompt}],
     )
 
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
 
     # Strip markdown code fences if present
     if text.startswith("```"):
@@ -206,7 +206,7 @@ Requirements:
                 print(f"  WARNING: JSON parse error for {cat}: {e}")
                 return {}
 
-    print(f"  WARNING: No JSON found in Claude response for {cat}")
+    print(f"  WARNING: No JSON found in GPT-4o response for {cat}")
     return {}
 
 
@@ -218,24 +218,24 @@ def enrich_general_rules_with_claude(
     Regenerate general_rules.md content from actual DB data patterns.
 
     Sends overall quality distribution, per-subject missing explanation rates,
-    and tier breakdowns to Claude, which generates updated cross-category rules
+    and tier breakdowns to GPT-4o, which generates updated cross-category rules
     grounded in the real data.
 
     Returns the full markdown content string for general_rules.md.
-    Requires ANTHROPIC_API_KEY in environment.
+    Requires OPENAI_API_KEY in environment.
     """
     try:
-        from anthropic import Anthropic
+        from openai import OpenAI
     except ImportError:
         raise RuntimeError(
-            "anthropic package not installed. Run: pip install anthropic"
+            "openai package not installed. Run: pip install openai"
         )
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    api_key = os.environ.get("OPENAI_API_KEY")
     if not api_key:
-        raise RuntimeError("ANTHROPIC_API_KEY not set. Add it to your .env file.")
+        raise RuntimeError("OPENAI_API_KEY not set. Add it to your .env file.")
 
-    client = Anthropic(api_key=api_key)
+    client = OpenAI(api_key=api_key)
 
     total = stats["total"]
     tier_dist = {tier: stats["by_tier"].get(tier, 0) for tier in ["TIER_A", "TIER_B", "TIER_C", "TIER_D"]}
@@ -287,10 +287,10 @@ Format the output as markdown starting with:
 
 Make the data quality warnings specific and numerical — reference the actual percentages above."""
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         max_tokens=2048,
         messages=[{"role": "user", "content": prompt}],
     )
 
-    return response.content[0].text
+    return response.choices[0].message.content

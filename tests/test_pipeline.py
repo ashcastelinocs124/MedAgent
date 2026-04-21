@@ -3,22 +3,19 @@ import os
 import pytest
 import psycopg2
 from openai import OpenAI
-from anthropic import Anthropic
 from src.pipeline import Pipeline
 from src.agents.context import PipelineResult
 from src.personalization.models import UserProfile, HealthLiteracy, Sex, Condition
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-ANTHROPIC_API_KEY = os.environ["ANTHROPIC_API_KEY"]
 
 
 @pytest.fixture(scope="module")
 def pipeline():
     conn = psycopg2.connect(DATABASE_URL)
     openai_client = OpenAI(api_key=OPENAI_API_KEY)
-    anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
-    p = Pipeline(conn, openai_client, anthropic_client, build_centroids=False)
+    p = Pipeline(conn, openai_client, None, build_centroids=False)
     yield p
     conn.close()
 

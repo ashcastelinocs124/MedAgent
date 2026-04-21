@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MedAgent — Personalise Your Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Public+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #faf7f0;
+    --paper-2: #f3eee2;
+    --paper-3: #ebe4d2;
+    --ink: #1a2418;
+    --ink-soft: #2f3a2c;
+    --ink-mute: #596155;
+    --ink-faint: #8a9082;
+    --rule: #c9bfa5;
+    --rule-soft: #ded5bc;
+    --signal: #b8411f;
+    --signal-deep: #8a2f16;
+    --signal-soft: rgba(184, 65, 31, 0.08);
+    --amber: #c68b2b;
+    --sage: #6d7e63;
+    --forest: #2f4a33;
+    --forest-deep: #1a2e1f;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  .app {
+    display: grid;
+    grid-template-columns: minmax(320px, 42%) 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── LEFT: showcase panel with vertical gradient stripes ────── */
+  .showcase {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 48px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    background: var(--forest-deep);
+    color: var(--paper);
+  }
+
+  /* Vertical striped gradient — forest → sage → paper → amber → terracotta */
+  .showcase::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg,
+        #1a2e1f 0%,
+        #2f4a33 14%,
+        #5c7362 30%,
+        #a8b09a 45%,
+        #ece4d1 58%,
+        #d9b583 72%,
+        #c68b2b 83%,
+        #b8411f 93%,
+        #8a2f16 100%
+      );
+    opacity: 0.95;
+  }
+
+  /* Vertical stripe overlay to create the sliced effect */
+  .showcase::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 58px,
+      rgba(26, 36, 24, 0.06) 58px,
+      rgba(26, 36, 24, 0.06) 60px
+    );
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* Grain texture */
+  .showcase-grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    z-index: 1;
+  }
+
+  /* Organic dark sphere to add depth, echoing the Delve reference */
+  .showcase-orb {
+    position: absolute;
+    bottom: -20%;
+    right: -30%;
+    width: 85%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgba(26,36,24,0.15), rgba(26,36,24,0.85) 65%, rgba(26,36,24,0.95) 100%);
+    filter: blur(2px);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .showcase-inner {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 36, "wght" 500, "SOFT" 30, "WONK" 1;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    text-decoration: none;
+  }
+  .brand .amp {
+    font-style: italic;
+    color: var(--signal);
+    font-variation-settings: "opsz" 36, "wght" 400, "SOFT" 100, "WONK" 1;
+  }
+  .brand-mark {
+    width: 28px; height: 28px;
+    background: var(--paper);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .brand-mark::before,
+  .brand-mark::after {
+    content: "";
+    position: absolute;
+    background: var(--forest-deep);
+  }
+  .brand-mark::before { left: 0; right: 0; top: 42%; height: 2px; }
+  .brand-mark::after { top: 0; bottom: 0; left: 42%; width: 2px; }
+
+  .showcase-body {
+    max-width: 440px;
+    padding-top: 40px;
+  }
+
+  .showcase-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.75;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .showcase-kicker::before {
+    content: "";
+    width: 40px; height: 1px;
+    background: var(--paper);
+    opacity: 0.5;
+  }
+
+  .showcase h1 {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 144, "wght" 350, "SOFT" 50;
+    font-size: clamp(42px, 4.5vw, 62px);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    color: var(--paper);
+    margin: 0 0 24px;
+    font-weight: 350;
+  }
+  .showcase h1 em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144, "wght" 300, "SOFT" 100, "WONK" 1;
+    color: #f3d5a8;
+  }
+
+  .showcase-lede {
+    font-family: "Instrument Serif", serif;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--paper);
+    opacity: 0.9;
+    max-width: 420px;
+  }
+
+  .showcase-foot {
+    display: flex;
+    gap: 40px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.7;
+    padding-top: 20px;
+    border-top: 0.5px solid rgba(236, 228, 209, 0.3);
+  }
+  .showcase-foot .stat-value {
+    font-family: "Fraunces", serif;
+    font-style: italic;
+    font-size: 20px;
+    letter-spacing: 0;
+    color: var(--paper);
+    opacity: 1;
+    display: block;
+    margin-bottom: 4px;
+    font-variation-settings: "opsz" 20, "wght" 400, "SOFT" 100, "WONK" 1;
+  }
+
+  /* ── RIGHT: form panel ─────────────────────────── */
+  .form-panel {
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  .form-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.15;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.14 0 0 0 0 0.09 0 0 0 0.4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .topnav {
+    padding: 24px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .topnav-links {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .topnav-links a {
+    color: var(--ink-mute);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .topnav-links a:hover { color: var(--signal); }
+
+  .topnav-cta {
+    padding: 12px 22px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .topnav-cta:hover { background: var(--signal); }
+  .topnav-cta .arrow {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 0;
+  }
+
+  .form-body {
+    flex: 1;
+    padding: 20px 56px 48px;
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+    width: 100%;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    background: transparent;
+    transition: all 0.3s;
+  }
+
+  .step.active .step-num {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+
+  .step.done .step-num {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: var(--paper);
+  }
+
+  .step-name {
+    font-family: "Public Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-mute);
+    letter-spacing: 0.01em;
+    transition: color 0.3s;
+  }
+  .step.active .step-name { color: var(--ink); font-weight: 600; }
+  .step.done .step-name { color: var(--sage); }
+
+  .step-sep {
+    font-family: "Instrument Serif", serif;
+    color: var(--rule);
+    font-size: 16px;
+  }
+
+  /* Step heading */
+  .step-head { margin-bottom: 36px; }
+
+  .step-kicker {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: 14px;
+  }
+
+  .step-title {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 72, "wght" 450, "SOFT" 50;
+    font-size: 44px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin: 0 0 16px;
+  }
+  .step-title em {
+    font-style: italic;
+    font-variation-settings: "opsz" 72, "wght" 350, "SOFT" 100, "WONK" 1;
+    color: var(--signal);
+  }
+
+  .step-desc {
+    font-family: "Instrument Serif", serif;
+    font-size: 19px;
+    line-height: 1.4;
+    color: var(--ink-mute);
+    max-width: 560px;
+  }
+
+  /* Form fields */
+  .field-group { margin-bottom: 28px; }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 22px;
+    margin-bottom: 28px;
+  }
+
+  label.field-label {
+    display: block;
+    font-family: "Public Sans", sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+    margin-bottom: 10px;
+  }
+  label.field-label .req {
+    color: var(--signal);
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    margin-left: 3px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    font-family: "Public Sans", sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    border-radius: 0;
+    padding: 12px 2px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-bottom-color: var(--signal);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--ink-faint);
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 16px;
+  }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23596155' stroke-width='1.5' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 4px center;
+    padding-right: 24px;
+    cursor: pointer;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 2px;
+  }
+
+  /* Condition checklist */
+  .cond-group {
+    margin-bottom: 28px;
+  }
+  .cond-group-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--rule-soft);
+  }
+
+  .cond-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+  }
+
+  .cond-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border: 0.5px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--ink-soft);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .cond-item:hover { border-color: var(--ink); background: var(--paper-2); }
+  .cond-item.selected {
+    border-color: var(--signal);
+    background: var(--signal-soft);
+    color: var(--ink);
+  }
+  .cond-item input[type="checkbox"] {
+    width: 14px; height: 14px;
+    accent-color: var(--signal);
+    cursor: pointer;
+    margin: 0;
+  }
+  .cond-item label {
+    cursor: pointer;
+    margin: 0;
+    font-family: "Public Sans", sans-serif;
+    font-size: 14px;
+  }
+
+  .cond-loading {
+    padding: 32px 0;
+    text-align: center;
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 16px;
+  }
+
+  /* Summary list */
+  .summary-block { margin-bottom: 24px; }
+  .summary-block-title {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--rule-soft);
+  }
+  .summary-text {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 22, "wght" 400, "SOFT" 30;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    line-height: 1.4;
+  }
+  .summary-text .muted {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 17px;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 5px 12px;
+    background: var(--paper);
+    border: 0.5px solid var(--rule);
+    color: var(--ink);
+    font-family: "Public Sans", sans-serif;
+    font-size: 13px;
+    margin: 0 6px 6px 0;
+  }
+  .tag.highlight {
+    border-color: var(--signal);
+    background: var(--signal-soft);
+    color: var(--signal-deep);
+  }
+
+  /* Buttons / actions */
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 0.5px solid var(--rule);
+    gap: 16px;
+  }
+
+  .btn {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 18px 32px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .btn:hover:not(:disabled) { background: var(--signal); }
+  .btn:disabled { background: var(--rule); color: var(--paper-3); cursor: not-allowed; }
+  .btn .arrow {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 16px;
+    letter-spacing: 0;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 0.5px solid var(--rule);
+    padding: 17px 26px;
+  }
+  .btn-ghost:hover:not(:disabled) { background: var(--paper-2); color: var(--ink); border-color: var(--ink); }
+  .btn-ghost .arrow { transform: scaleX(-1); }
+
+  /* Wizard step visibility */
+  .wizard-step { display: none; animation: fadeUp 0.45s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .wizard-step.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Spinner */
+  .spinner-wrap {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 22px;
+  }
+  .spinner {
+    width: 44px; height: 44px;
+    border: 2px solid var(--rule-soft);
+    border-top-color: var(--signal);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spinner-text {
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    color: var(--ink-mute);
+    font-size: 18px;
+  }
+
+  /* Clarification */
+  .clarify-card {
+    padding: 22px 24px;
+    background: var(--paper-2);
+    border-left: 2px solid var(--signal);
+    margin-bottom: 14px;
+  }
+  .clarify-q {
+    font-family: "Fraunces", serif;
+    font-variation-settings: "opsz" 22, "wght" 400, "SOFT" 30;
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--ink);
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .clarify-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .clarify-opt {
+    padding: 9px 16px;
+    background: var(--paper);
+    border: 0.5px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: "Public Sans", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .clarify-opt:hover { border-color: var(--ink); }
+  .clarify-opt.selected {
+    border-color: var(--signal);
+    background: var(--signal-soft);
+    color: var(--signal-deep);
+    font-weight: 500;
+  }
+
+  /* Error */
+  .error-box {
+    display: none;
+    padding: 14px 18px;
+    border-left: 2px solid var(--signal);
+    background: var(--signal-soft);
+    font-family: "Instrument Serif", serif;
+    font-size: 16px;
+    color: var(--signal-deep);
+    margin-bottom: 18px;
+  }
+  .error-box.visible { display: block; }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .app { grid-template-columns: 1fr; }
+    .showcase {
+      min-height: auto;
+      padding: 32px 32px 40px;
+    }
+    .showcase-body { padding-top: 24px; }
+    .showcase h1 { font-size: 42px; }
+    .showcase-lede { font-size: 19px; }
+    .showcase-foot { display: none; }
+    .topnav { padding: 20px 32px; }
+    .form-body { padding: 16px 32px 40px; }
+    .step-title { font-size: 34px; }
+  }
+
+  @media (max-width: 620px) {
+    .stepper { gap: 6px; }
+    .step-name { display: none; }
+    .actions { flex-direction: column-reverse; align-items: stretch; }
+    .btn { justify-content: center; }
+    .showcase { padding: 28px 24px 32px; }
+    .form-body { padding: 12px 24px 32px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- ── LEFT: Showcase Panel ────────────────────── -->
+  <aside class="showcase">
+    <div class="showcase-grain"></div>
+    <div class="showcase-orb"></div>
+    <div class="showcase-inner">
+      <a href="/chat" class="brand">
+        <span class="brand-mark"></span>
+        <span>Med<span class="amp">&amp;</span>Agent</span>
+      </a>
+
+      <div class="showcase-body">
+        <div class="showcase-kicker">A Personalised Consulting Room</div>
+        <h1>Save hours of searching. Get health answers made <em>for you.</em></h1>
+        <p class="showcase-lede">So that every reply reflects your age, your conditions, the medicines on your shelf — not a stranger's.</p>
+      </div>
+
+      <div class="showcase-foot">
+        <div>
+          <span class="stat-value">4</span>
+          specialist agents
+        </div>
+        <div>
+          <span class="stat-value">10k+</span>
+          evidence records
+        </div>
+        <div>
+          <span class="stat-value">A–D</span>
+          tiered sources
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── RIGHT: Form Panel ────────────────────────── -->
+  <section class="form-panel">
+    <nav class="topnav">
+      <div class="topnav-links">
+        <a href="/chat">← Back to chat</a>
+      </div>
+      <a href="/chat" class="topnav-cta">
+        <span>Skip for now</span>
+        <span class="arrow">→</span>
+      </a>
+    </nav>
+
+    <div class="form-body">
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <div class="step active" data-step="1">
+          <div class="step-num">1</div>
+          <div class="step-name">Personal Details</div>
+        </div>
+        <span class="step-sep">›</span>
+        <div class="step" data-step="2">
+          <div class="step-num">2</div>
+          <div class="step-name">Conditions</div>
+        </div>
+        <span class="step-sep">›</span>
+        <div class="step" data-step="3">
+          <div class="step-num">3</div>
+          <div class="step-name">Medications</div>
+        </div>
+        <span class="step-sep">›</span>
+        <div class="step" data-step="4">
+          <div class="step-num">4</div>
+          <div class="step-name">Review</div>
+        </div>
+      </div>
+
+      <!-- Error display -->
+      <div class="error-box" id="error-box"></div>
+
+      <!-- ── Step 1: Personal Details ────────── -->
+      <div class="wizard-step active" id="step-1">
+        <div class="step-head">
+          <div class="step-kicker">Step 01 — About You</div>
+          <h2 class="step-title">Tell us <em>a little</em> about yourself.</h2>
+          <p class="step-desc">The basics help us calibrate reading level and surface what's clinically relevant for your age and sex.</p>
+        </div>
+
+        <div class="field-row">
+          <div>
+            <label class="field-label" for="ob-age">Age <span class="req">*</span></label>
+            <input type="number" id="ob-age" min="1" max="120" placeholder="e.g. 45" />
+          </div>
+          <div>
+            <label class="field-label" for="ob-sex">Sex</label>
+            <select id="ob-sex">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+              <option value="prefer_not_to_say">Prefer not to say</option>
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="ob-literacy">Health Literacy</label>
+            <select id="ob-literacy">
+              <option value="low">Plain language</option>
+              <option value="medium" selected>Balanced</option>
+              <option value="high">Clinical detail</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actions">
+          <span></span>
+          <button class="btn" onclick="goStep(2)">
+            <span>Continue</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Step 2: Conditions ────────── -->
+      <div class="wizard-step" id="step-2">
+        <div class="step-head">
+          <div class="step-kicker">Step 02 — Medical History</div>
+          <h2 class="step-title">Any <em>ongoing conditions</em> we should know about?</h2>
+          <p class="step-desc">Tick anything that applies. Your selections help weight retrieval toward the categories most relevant to you — skip this if you'd rather not say.</p>
+        </div>
+
+        <div class="cond-loading" id="conditions-loading">Loading conditions…</div>
+        <div id="conditions-list" style="display:none;"></div>
+
+        <div class="field-group" style="margin-top: 28px;">
+          <label class="field-label" for="ob-freetext">Anything else not listed?</label>
+          <textarea id="ob-freetext" placeholder="e.g. celiac disease, Raynaud's, fibromyalgia"></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-ghost" onclick="goStep(1)">
+            <span class="arrow">→</span>
+            <span>Back</span>
+          </button>
+          <button class="btn" onclick="goStep(3)">
+            <span>Continue</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Step 3: Medications ────────── -->
+      <div class="wizard-step" id="step-3">
+        <div class="step-head">
+          <div class="step-kicker">Step 03 — The Pharmacy</div>
+          <h2 class="step-title">What's <em>on your shelf?</em></h2>
+          <p class="step-desc">List medicines you take regularly, one per line. This lets us flag interactions and tailor drug-safety advice — optional, of course.</p>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="ob-meds">Current medications</label>
+          <textarea id="ob-meds" style="min-height: 140px;" placeholder="Metformin&#10;Lisinopril&#10;Ibuprofen"></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-ghost" onclick="goStep(2)">
+            <span class="arrow">→</span>
+            <span>Back</span>
+          </button>
+          <button class="btn" onclick="goStep(4)">
+            <span>Continue</span>
+            <span class="arrow">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── Step 4: Review ────────── -->
+      <div class="wizard-step" id="step-4">
+        <div id="summary-card">
+          <div class="step-head">
+            <div class="step-kicker">Step 04 — Confirm &amp; Continue</div>
+            <h2 class="step-title">Does this <em>look right?</em></h2>
+            <p class="step-desc">Review your details. We'll run a quick weight-calibration pass — our model may ask one or two clarifying questions before finishing.</p>
+          </div>
+
+          <div class="summary-block">
+            <div class="summary-block-title">Personal</div>
+            <div class="summary-text" id="sum-demographics"></div>
+          </div>
+
+          <div class="summary-block">
+            <div class="summary-block-title">Conditions</div>
+            <div class="summary-text" id="sum-conditions"></div>
+          </div>
+
+          <div class="summary-block">
+            <div class="summary-block-title">Medications</div>
+            <div class="summary-text" id="sum-medications"></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-ghost" onclick="goStep(3)">
+              <span class="arrow">→</span>
+              <span>Back</span>
+            </button>
+            <button class="btn" id="confirm-btn" onclick="confirmProfile()">
+              <span>Confirm Profile</span>
+              <span class="arrow">→</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="spinner-wrap" id="review-spinner">
+          <div class="spinner"></div>
+          <div class="spinner-text">Analysing your profile…</div>
+        </div>
+
+        <div id="clarify-area" style="display:none;"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // ── State ───────────────────────────────────
+  let currentStep = 1;
+  let conditionsData = [];
+
+  // ── Step navigation ─────────────────────────
+  function goStep(n) {
+    if (n > currentStep && currentStep === 1) {
+      const age = parseInt(document.getElementById("ob-age").value);
+      if (!age || age < 1 || age > 120) {
+        showError("Please enter a valid age (1–120).");
+        return;
+      }
+      hideError();
+    }
+
+    if (n === 4) populateSummary();
+
+    document.getElementById("step-" + currentStep).classList.remove("active");
+    document.getElementById("step-" + n).classList.add("active");
+    currentStep = n;
+    updateStepper();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function updateStepper() {
+    document.querySelectorAll(".step").forEach((s) => {
+      const sNum = parseInt(s.dataset.step);
+      s.classList.remove("active", "done");
+      if (sNum < currentStep) s.classList.add("done");
+      else if (sNum === currentStep) s.classList.add("active");
+    });
+  }
+
+  // ── Error helpers ───────────────────────────
+  function showError(msg) {
+    const box = document.getElementById("error-box");
+    box.textContent = msg;
+    box.classList.add("visible");
+  }
+  function hideError() {
+    document.getElementById("error-box").classList.remove("visible");
+  }
+
+  // ── Fetch + render conditions ───────────────
+  async function loadConditions() {
+    try {
+      const resp = await fetch("/conditions");
+      conditionsData = await resp.json();
+      renderConditions();
+    } catch (e) {
+      document.getElementById("conditions-loading").textContent = "Failed to load conditions.";
+    }
+  }
+
+  function renderConditions() {
+    const groups = {};
+    conditionsData.forEach((c) => {
+      if (!groups[c.group]) groups[c.group] = [];
+      groups[c.group].push(c);
+    });
+
+    const host = document.getElementById("conditions-list");
+    host.innerHTML = "";
+
+    Object.keys(groups).forEach((groupName) => {
+      const section = document.createElement("div");
+      section.className = "cond-group";
+
+      const title = document.createElement("div");
+      title.className = "cond-group-title";
+      title.textContent = groupName;
+      section.appendChild(title);
+
+      const grid = document.createElement("div");
+      grid.className = "cond-grid";
+
+      groups[groupName].forEach((c) => {
+        const item = document.createElement("div");
+        item.className = "cond-item";
+        item.dataset.key = c.key;
+
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = "cond-" + c.key;
+        cb.value = c.key;
+
+        const lbl = document.createElement("label");
+        lbl.setAttribute("for", "cond-" + c.key);
+        lbl.textContent = c.name;
+
+        item.appendChild(cb);
+        item.appendChild(lbl);
+
+        item.addEventListener("click", (e) => {
+          if (e.target.tagName !== "INPUT") {
+            cb.checked = !cb.checked;
+          }
+          item.classList.toggle("selected", cb.checked);
+        });
+
+        grid.appendChild(item);
+      });
+
+      section.appendChild(grid);
+      host.appendChild(section);
+    });
+
+    document.getElementById("conditions-loading").style.display = "none";
+    host.style.display = "block";
+  }
+
+  // ── Getters ─────────────────────────────────
+  function getSelectedConditions() {
+    return Array.from(document.querySelectorAll('#conditions-list input[type="checkbox"]:checked')).map(
+      (cb) => cb.value
+    );
+  }
+
+  function getSelectedConditionNames() {
+    return Array.from(document.querySelectorAll('#conditions-list input[type="checkbox"]:checked')).map((cb) => {
+      const item = conditionsData.find((c) => c.key === cb.value);
+      return item ? item.name : cb.value;
+    });
+  }
+
+  function getMedications() {
+    return document
+      .getElementById("ob-meds")
+      .value.split("\n")
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0);
+  }
+
+  // ── Summary ─────────────────────────────────
+  function populateSummary() {
+    const age = document.getElementById("ob-age").value;
+    const sexSel = document.getElementById("ob-sex");
+    const sexText = sexSel.options[sexSel.selectedIndex].text;
+    const litSel = document.getElementById("ob-literacy");
+    const litText = litSel.options[litSel.selectedIndex].text;
+
+    document.getElementById("sum-demographics").innerHTML =
+      "Age " + age + "  ·  " + sexText + "  ·  " + '<span class="muted">' + litText + " reading</span>";
+
+    const names = getSelectedConditionNames();
+    const freetext = document.getElementById("ob-freetext").value.trim();
+    const condEl = document.getElementById("sum-conditions");
+    if (names.length === 0 && !freetext) {
+      condEl.innerHTML = '<span class="muted">None selected</span>';
+    } else {
+      let html = names.map((n) => '<span class="tag">' + n + "</span>").join("");
+      if (freetext) html += '<span class="tag highlight">' + freetext + "</span>";
+      condEl.innerHTML = html;
+    }
+
+    const meds = getMedications();
+    const medsEl = document.getElementById("sum-medications");
+    if (meds.length === 0) {
+      medsEl.innerHTML = '<span class="muted">None entered</span>';
+    } else {
+      medsEl.innerHTML = meds.map((m) => '<span class="tag">' + m + "</span>").join("");
+    }
+  }
+
+  // ── Confirm & review ────────────────────────
+  async function confirmProfile() {
+    const summary = document.getElementById("summary-card");
+    const spinner = document.getElementById("review-spinner");
+    const clarify = document.getElementById("clarify-area");
+
+    summary.style.display = "none";
+    clarify.style.display = "none";
+    spinner.style.display = "flex";
+    hideError();
+
+    const payload = {
+      age: parseInt(document.getElementById("ob-age").value) || null,
+      sex: document.getElementById("ob-sex").value,
+      health_literacy: document.getElementById("ob-literacy").value,
+      conditions: getSelectedConditions(),
+      freetext_conditions: document.getElementById("ob-freetext").value.trim(),
+      medications: getMedications(),
+    };
+
+    try {
+      const resp = await fetch("/profile/review", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await resp.json();
+      spinner.style.display = "none";
+
+      if (data.error) {
+        showError("Error: " + data.error);
+        summary.style.display = "block";
+        return;
+      }
+
+      if (data.status === "needs_clarification") handleClarification(data);
+      else if (data.status === "ready") window.location.href = "/chat?session_id=" + data.session_id;
+    } catch (e) {
+      spinner.style.display = "none";
+      showError("Request failed: " + e.message);
+      summary.style.display = "block";
+    }
+  }
+
+  // ── Clarification flow ─────────────────────
+  let _clarifySessionId = null;
+  let _clarifyAnswers = [];
+  let _clarifyQuestions = [];
+
+  function handleClarification(data) {
+    _clarifySessionId = data.session_id;
+    _clarifyQuestions = data.questions || [];
+    _clarifyAnswers = new Array(_clarifyQuestions.length).fill(null);
+
+    const area = document.getElementById("clarify-area");
+    area.innerHTML =
+      '<div class="step-head">' +
+      '<div class="step-kicker">Calibration</div>' +
+      '<h2 class="step-title">A <em>couple more</em> questions.</h2>' +
+      '<p class="step-desc">Our model needs a tiny bit more context to tune your weights properly.</p>' +
+      "</div>";
+
+    _clarifyQuestions.forEach((q, idx) => {
+      const card = document.createElement("div");
+      card.className = "clarify-card";
+
+      const qEl = document.createElement("div");
+      qEl.className = "clarify-q";
+      qEl.textContent = q.question;
+      card.appendChild(qEl);
+
+      const opts = document.createElement("div");
+      opts.className = "clarify-opts";
+
+      (q.options || []).forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "clarify-opt";
+        btn.textContent = opt;
+        btn.addEventListener("click", () => {
+          opts.querySelectorAll(".clarify-opt").forEach((b) => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          _clarifyAnswers[idx] = opt;
+        });
+        opts.appendChild(btn);
+      });
+
+      card.appendChild(opts);
+      area.appendChild(card);
+    });
+
+    const actions = document.createElement("div");
+    actions.className = "actions";
+
+    const backBtn = document.createElement("button");
+    backBtn.className = "btn btn-ghost";
+    backBtn.innerHTML = '<span class="arrow">→</span><span>Back</span>';
+    backBtn.addEventListener("click", () => {
+      area.style.display = "none";
+      document.getElementById("summary-card").style.display = "block";
+    });
+    actions.appendChild(backBtn);
+
+    const submitBtn = document.createElement("button");
+    submitBtn.className = "btn";
+    submitBtn.innerHTML = '<span>Submit Answers</span><span class="arrow">→</span>';
+    submitBtn.addEventListener("click", submitClarification);
+    actions.appendChild(submitBtn);
+
+    area.appendChild(actions);
+    area.style.display = "block";
+  }
+
+  async function submitClarification() {
+    if (_clarifyAnswers.some((a) => a === null)) {
+      showError("Please answer all questions before continuing.");
+      return;
+    }
+    hideError();
+
+    const area = document.getElementById("clarify-area");
+    const spinner = document.getElementById("review-spinner");
+
+    area.style.display = "none";
+    spinner.querySelector(".spinner-text").textContent = "Finalising your profile…";
+    spinner.style.display = "flex";
+
+    try {
+      const resp = await fetch("/profile/clarify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          session_id: _clarifySessionId,
+          answers: _clarifyAnswers,
+        }),
+      });
+      const data = await resp.json();
+      spinner.style.display = "none";
+
+      if (data.error) {
+        showError("Error: " + data.error);
+        area.style.display = "block";
+        return;
+      }
+
+      if (data.status === "ready") window.location.href = "/chat?session_id=" + _clarifySessionId;
+    } catch (e) {
+      spinner.style.display = "none";
+      showError("Request failed: " + e.message);
+      area.style.display = "block";
+    }
+  }
+
+  // ── Init ───────────────────────────────────
+  loadConditions();
+</script>
+</body>
+</html>

@@ -221,17 +221,10 @@ def main():
             model="gpt-4-turbo-2024-04-09",
             system_message=OPENAI_SYSTEM_MESSAGE_CHATGPT,
         ),
-        # Claude models:
-        "claude-3-opus-20240229_empty": ClaudeCompletionSampler(
-            model="claude-3-opus-20240229",
+        # (Anthropic baselines removed — all Claude slots now route to GPT-4o)
+        "gpt-4o_baseline_empty": ClaudeCompletionSampler(
+            model="gpt-4o",
             system_message=CLAUDE_SYSTEM_MESSAGE_LMSYS,
-        ),
-        "claude-3-7-sonnet-20250219": ClaudeCompletionSampler(
-            model="claude-3-7-sonnet-20250219",
-            system_message=CLAUDE_SYSTEM_MESSAGE_LMSYS,
-        ),
-        "claude-3-haiku-20240307": ClaudeCompletionSampler(
-            model="claude-3-haiku-20240307",
         ),
     }
 

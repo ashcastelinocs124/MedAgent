@@ -25,7 +25,6 @@ from pathlib import Path
 import psycopg2
 from dotenv import load_dotenv
 from openai import OpenAI
-from anthropic import Anthropic
 
 load_dotenv()
 
@@ -137,8 +136,7 @@ def generate_test_cases(n: int, output_path: Path) -> list[dict]:
 def _build_pipeline_sampler(profile: str) -> PipelineSampler:
     """Instantiate a Pipeline from env vars and wrap it as a PipelineSampler.
 
-    Requires DATABASE_URL, OPENAI_API_KEY in the environment (or .env file).
-    ANTHROPIC_API_KEY is not required when use_gpt4o=True.
+    Requires DATABASE_URL and OPENAI_API_KEY in the environment (or .env file).
 
     Args:
         profile: Profile preset name (e.g. 'default', 'low_literacy_patient').

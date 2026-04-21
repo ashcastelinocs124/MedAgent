@@ -182,21 +182,45 @@ python src/data/embed.py --source medmcqa --limit 10000
 python src/data/ingest.py --source medmcqa --limit 1 --rebuild-brain
 ```
 
-### Running the Demo
+### Running the Frontend
+
+The official frontend is a FastAPI-served single-page chat UI at `src/static/chat.html` (ChatGPT-style sidebar with conversation history + profile shortcut). It talks to the same `/query` backend used by the evaluation pipeline.
+
+**Requirements to run the frontend:**
+
+1. **Python 3.11+** — `python --version`
+2. **Install Python dependencies** (includes `fastapi`, `uvicorn`, `openai`, `psycopg2-binary`, `pgvector`, etc.):
+   ```bash
+   pip install -r requirements.txt
+   pip install pgvector uvicorn
+   ```
+3. **Populated `.env`** at repo root with at minimum:
+   - `DATABASE_URL` — AWS RDS Postgres connection string (ingested data + embeddings must already be loaded)
+   - `OPENAI_API_KEY` — required for embeddings and GPT-5.4 synthesis (model picker in the chat UI)
+   - `ANTHROPIC_API_KEY` — optional, used by the Claude fallback path in Agent A
+4. **Database ready** — tables `medmcqa_records` / `pubmedqa_records` / `medquad_records` plus the `embeddings` table must be populated (see **Database Setup** above). Verify with `python src/data/setup_db.py`.
+5. **Outbound internet access** from the host to OpenAI (and Anthropic if used) during startup and per-query.
+6. **A modern browser** with `localStorage` enabled — conversation history and model preference are stored client-side.
+
+**Start the server:**
 
 ```bash
 uvicorn src.app:app --reload
 ```
 
-Open http://localhost:8000
+Open **http://localhost:8000** — this now serves the chat UI directly. First-time users should visit `/onboarding` once to build a personalized profile; the chat `session_id` is then threaded through every query.
 
 **Endpoints:**
 | Endpoint | Method | Description |
 |----------|--------|-------------|
-| `/onboarding` | GET | 4-screen profile intake wizard |
-| `/` | GET | Search page with agent step visualization |
-| `/query` | POST | JSON API: `{query, session_id?}` → `{answer_text, confidence, disclaimer, citations}` |
-| `/profile/review` | POST | LLM-augmented profile weight review |
+| `/` | GET | **Official chat UI** — sidebar with conversation history, profile shortcut, model picker |
+| `/chat` | GET | Alias for `/` (same chat UI) |
+| `/onboarding` | GET | 4-screen profile intake wizard (demographics → conditions → medications → review) |
+| `/legacy` | GET | Previous search page with agent-step visualization (kept for reference) |
+| `/query` | POST | JSON API: `{query, session_id?, model?}` → `{answer_text, confidence, disclaimer, citations, ...}` |
+| `/profile/review` | POST | LLM-augmented profile weight review (GPT-4o) |
+| `/profile/clarify` | POST | Follow-up clarification turn after `profile/review` |
+| `/conditions` | GET | Condition checklist consumed by the onboarding wizard |
 
 ---
 

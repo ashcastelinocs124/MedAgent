@@ -26,9 +26,9 @@ class InferredComorbidity:
 
 
 class ComorbidityInference:
-    """Discovers cross-condition relationships using the Anthropic API."""
+    """Discovers cross-condition relationships using the OpenAI API."""
 
-    def __init__(self, client: Optional[object] = None, model: str = "claude-sonnet-4-5-20250929") -> None:
+    def __init__(self, client: Optional[object] = None, model: str = "gpt-4o") -> None:
         self.client = client
         self.model = model
         self._cache: dict[frozenset[str], list[InferredComorbidity]] = {}
@@ -67,7 +67,7 @@ class ComorbidityInference:
         condition_b: str,
         available_categories: list[str],
     ) -> list[InferredComorbidity]:
-        """Call the Anthropic API to discover comorbidity relationships."""
+        """Call the OpenAI API to discover comorbidity relationships."""
         prompt = (
             f"Given a patient with both '{condition_a}' and '{condition_b}', "
             f"identify which of these health categories become MORE clinically "
@@ -85,13 +85,13 @@ class ComorbidityInference:
         )
 
         try:
-            response = self.client.messages.create(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 max_tokens=1024,
                 messages=[{"role": "user", "content": prompt}],
             )
 
-            text = response.content[0].text.strip()
+            text = response.choices[0].message.content.strip()
             # Extract JSON from response (handle markdown code blocks)
             if "```" in text:
                 text = text.split("```")[1]

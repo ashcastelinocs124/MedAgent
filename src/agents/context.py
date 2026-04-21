@@ -73,6 +73,7 @@ class QueryContext:
     # Input
     query: str
     user_profile: Any  # UserProfile from src.personalization.models
+    model: str = "gpt-5.4"  # OpenAI model id used by Agent A + Agent C LLM calls
 
     # Set by Agent A
     normalized_terms: list[str] = field(default_factory=list)

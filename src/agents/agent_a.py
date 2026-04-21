@@ -6,7 +6,7 @@ three-step cascade:
 
   1. Keyword match — terminology maps parsed from brain/categories/*.md
   2. Embedding similarity — cosine distance against per-category centroids
-  3. LLM fallback — Claude classifies from a list of known category slugs
+  3. LLM fallback — GPT-4o classifies from a list of known category slugs
 
 Falls back to ``public_health_prevention`` on any unrecoverable error.
 """
@@ -19,7 +19,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from openai import OpenAI
-    from anthropic import Anthropic
 
 import numpy as np
 
@@ -49,7 +48,7 @@ class QueryUnderstandingAgent:
     Args:
         db_conn: Active psycopg2 connection (or ``None`` for keyword-only mode).
         openai_client: Initialised ``openai.OpenAI`` client (or ``None``).
-        anthropic_client: Initialised ``anthropic.Anthropic`` client (or ``None``).
+        anthropic_client: Deprecated, ignored. Kept for backward compatibility.
         brain_dir: Path to the ``brain/`` directory (default ``"brain"``).
     """
 
@@ -57,13 +56,12 @@ class QueryUnderstandingAgent:
         self,
         db_conn,
         openai_client: "OpenAI | None",
-        anthropic_client: "Anthropic | None",
+        anthropic_client: object | None = None,  # deprecated, ignored
         brain_dir: str = "brain",
         memory_store=None,
     ) -> None:
         self._db = db_conn
         self._openai = openai_client
-        self._anthropic = anthropic_client
         self._brain_dir = Path(brain_dir)
         self._memory_store = memory_store
 
@@ -215,7 +213,7 @@ class QueryUnderstandingAgent:
           1. Keyword match (full phrase then token-presence) — deterministic, free.
           2. Embedding cosine similarity against pre-built centroids — requires DB +
              OpenAI client; skipped gracefully when unavailable.
-          3. LLM classification via Claude — requires Anthropic client; skipped on error.
+          3. LLM classification via GPT-4o — requires OpenAI client; skipped on error.
           4. Fallback to ``public_health_prevention``.
 
         Args:
@@ -277,10 +275,13 @@ class QueryUnderstandingAgent:
             except Exception:
                 pass
 
+        # Resolve model for this query (set by caller via ctx.model)
+        model = getattr(ctx, "model", None) or "gpt-5.4"
+
         # Step 3: LLM fallback
         if category is None:
             try:
-                cat = await self._llm_classify(ctx.query)
+                cat = await self._llm_classify(ctx.query, model)
                 category, method = cat or _DEFAULT_CATEGORY, "llm"
             except Exception:
                 category, method = _DEFAULT_CATEGORY, "fallback"
@@ -293,7 +294,7 @@ class QueryUnderstandingAgent:
         #   Expands to a HyDE clinical sentence seeded with brain medical terms,
         #   appended to normalized_terms so Agent C searches with richer vocabulary.
         # ----------------------------------------------------------------
-        expanded = await self._expand_query(ctx.query, ctx.category)
+        expanded = await self._expand_query(ctx.query, ctx.category, model)
         if expanded:
             existing = set(ctx.normalized_terms)
             ctx.normalized_terms = ctx.normalized_terms + [t for t in expanded if t not in existing]
@@ -304,7 +305,7 @@ class QueryUnderstandingAgent:
         if self._memory_store is not None and ctx.user_profile:
             user_id = getattr(ctx.user_profile, "user_id", None)
             if user_id:
-                new_facts = await self._extract_user_facts(ctx.query, ctx.user_profile)
+                new_facts = await self._extract_user_facts(ctx.query, ctx.user_profile, model)
                 for fact in new_facts:
                     self._memory_store.add_fact(
                         user_id, fact["fact"], fact.get("category", "general")
@@ -352,8 +353,8 @@ class QueryUnderstandingAgent:
                 best_cat = cat
         return best_cat, best_score
 
-    async def _expand_query(self, query: str, category: str) -> list[str]:
-        """Expand a consumer query into a clinical HyDE sentence using Claude Haiku.
+    async def _expand_query(self, query: str, category: str, model: str = "gpt-5.4") -> list[str]:
+        """Expand a consumer query into a clinical HyDE sentence using the selected model.
 
         Bridges the vocabulary gap between consumer language ("chest pain") and
         the clinical MCQ/QA language in the embedding corpus. Seeds the prompt with
@@ -368,7 +369,7 @@ class QueryUnderstandingAgent:
             List containing one HyDE clinical sentence, or empty list on any error.
             Returned as a list so it integrates cleanly with normalized_terms.
         """
-        if self._anthropic is None and self._openai is None:
+        if self._openai is None:
             return []
         try:
             seed_terms = self._medical_terms.get(category, [])[:10]
@@ -382,27 +383,18 @@ class QueryUnderstandingAgent:
                 f"Category: {category}. Query: {query}\n"
                 "Respond with the clinical sentences only, nothing else."
             )
-            if self._anthropic is not None:
-                msg = await asyncio.to_thread(
-                    self._anthropic.messages.create,
-                    model="claude-haiku-4-5-20251001",
-                    max_tokens=120,
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                text = msg.content[0].text.strip()
-            else:
-                resp = await asyncio.to_thread(
-                    self._openai.chat.completions.create,
-                    model="gpt-4o",
-                    max_tokens=120,
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                text = resp.choices[0].message.content.strip()
+            resp = await asyncio.to_thread(
+                self._openai.chat.completions.create,
+                model=model,
+                max_completion_tokens=120,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            text = resp.choices[0].message.content.strip()
             return [text] if text else []
         except Exception:
             return []
 
-    async def _extract_user_facts(self, query: str, profile) -> list[dict[str, str]]:
+    async def _extract_user_facts(self, query: str, profile, model: str = "gpt-5.4") -> list[dict[str, str]]:
         """Extract novel health-relevant personal context from query.
 
         Compares against the user's profile and only returns facts that
@@ -436,24 +428,15 @@ class QueryUnderstandingAgent:
                 'or {"new_facts": []} if nothing new.\n'
                 "Category should be a brain category slug. Respond with only the JSON."
             )
-            if self._openai is not None:
-                resp = await asyncio.to_thread(
-                    self._openai.chat.completions.create,
-                    model="gpt-4o",
-                    max_tokens=150,
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                text = resp.choices[0].message.content.strip()
-            elif self._anthropic is not None:
-                msg = await asyncio.to_thread(
-                    self._anthropic.messages.create,
-                    model="claude-haiku-4-5-20251001",
-                    max_tokens=150,
-                    messages=[{"role": "user", "content": prompt}],
-                )
-                text = msg.content[0].text.strip()
-            else:
+            if self._openai is None:
                 return []
+            resp = await asyncio.to_thread(
+                self._openai.chat.completions.create,
+                model=model,
+                max_completion_tokens=150,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            text = resp.choices[0].message.content.strip()
 
             import json as _json
             data = _json.loads(text.strip().removeprefix("```json").removesuffix("```"))
@@ -461,15 +444,15 @@ class QueryUnderstandingAgent:
         except Exception:
             return []
 
-    async def _llm_classify(self, query: str) -> str:
-        """Ask Claude to classify ``query`` into one of the known category slugs.
+    async def _llm_classify(self, query: str, model: str = "gpt-5.4") -> str:
+        """Ask the selected OpenAI model to classify ``query`` into one of the known category slugs.
 
         Args:
             query: Raw query string.
 
         Returns:
             A category slug (guaranteed to be in ``self._categories``), or
-            ``_DEFAULT_CATEGORY`` if Claude returns an unrecognised slug.
+            ``_DEFAULT_CATEGORY`` if GPT-4o returns an unrecognised slug.
 
         Raises:
             Exception: Propagates any API or network error so the caller can fall
@@ -482,20 +465,11 @@ class QueryUnderstandingAgent:
             f"Query: {query}\n"
             "Respond with only the category slug, nothing else."
         )
-        if self._anthropic is not None:
-            msg = await asyncio.to_thread(
-                self._anthropic.messages.create,
-                model="claude-sonnet-4-6",
-                max_tokens=50,
-                messages=[{"role": "user", "content": prompt_content}],
-            )
-            slug = msg.content[0].text.strip().lower().replace(" ", "_").replace("-", "_")
-        else:
-            resp = await asyncio.to_thread(
-                self._openai.chat.completions.create,
-                model="gpt-4o",
-                max_tokens=50,
-                messages=[{"role": "user", "content": prompt_content}],
-            )
-            slug = resp.choices[0].message.content.strip().lower().replace(" ", "_").replace("-", "_")
+        resp = await asyncio.to_thread(
+            self._openai.chat.completions.create,
+            model=model,
+            max_completion_tokens=50,
+            messages=[{"role": "user", "content": prompt_content}],
+        )
+        slug = resp.choices[0].message.content.strip().lower().replace(" ", "_").replace("-", "_")
         return slug if slug in self._categories else _DEFAULT_CATEGORY
